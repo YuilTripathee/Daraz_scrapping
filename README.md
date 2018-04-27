@@ -4,3 +4,9 @@ It is a scrapping project. It uses Python sript to scrape data from one of the p
 # How it works?
 1. Run the script.
 2. Get the information from output and get your product.
+
+# Libraries applied
+```python
+import requests
+from bs4 import BeautifulSoup as soup
+```
