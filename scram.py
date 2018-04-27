@@ -11,18 +11,6 @@ r = requests.get('https://www.daraz.com.np/dslr-hybrid-cameras/')
 my_soup = soup(r.text, 'html.parser')
 containers = my_soup.find_all("div",{"class":['sku', '-gallery']})
 
-# # fetching out the output from the soup
-# output = """"""
-# output += "Total products : " + str(len(containers)) + '\n\n'
-# for product in containers:
-#     output += product.a.text.strip().replace('\xa0', '') + '\n'
-    
-# # writing into the text file
-# filename = 'output.txt'
-# fo = open(filename, 'w')
-# fo.write(output)
-# print('Output sucessfully written')
-
 # Writing into CSV
 filename = "products.csv"
 f = open(filename, 'w')
@@ -43,13 +31,6 @@ try:
             product_discount = prod_cont[1].find_all("span")[0].text
             price_mini = prod_cont[1].find_all("span")[1]
             product_price = price_mini.span.find_all("span")[1]['data-price']
-            # print('Name of product :\n'+ product_name)
-            # print('Product hash value :\n' + product_hash)
-            # print('Product Link:\n' + product_link)
-            # print('Product Image Link:\n' + product_image_link)
-            # print('Product Discount:\n' + product_discount)
-            # print('Product Price:\n' + product_price)
-            # print('\n')
             f.write(product_name + "," + product_hash + "," + urllib.parse.quote_plus(product_link) + "," + urllib.parse.quote_plus(product_image_link) + "," + product_discount + "," + product_price + "\n")
             pass
     else:
