@@ -10,3 +10,7 @@ It is a scrapping project. It uses Python sript to scrape data from one of the p
 import requests
 from bs4 import BeautifulSoup as soup
 ```
+
+# Output structure
+The script returns a CSV (Comma Separted Value) format that is used universally. This file can be opened from Microsoft Excel.
+![Output Screenshot](docs/scr1.png)
