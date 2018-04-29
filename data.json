@@ -1,21 +1,21 @@
 [
     {
-        "date_created": null,
-        "date_modified": null,
+        "product_id": 1,
+        "product_hash": "OT776EL0L0PIGNAFAMZ",
+        "product_name": "White Ear Buds Wired Earphones With Mic",
+        "site_name": "Daraz.com.np",
+        "product_link": "https://www.daraz.com.np/other-white-ear-buds-wired-earphones-with-mic-50353.html",
+        "product_image_link": "https://np.daraz.io/bfxExDSTe0CgTLb32vZUTl40IOw=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/35/305/1.jpg?0406",
+        "date_created": "Sun Apr 29 15:48:33 2018",
+        "date_modified": "Sun Apr 29 15:48:33 2018",
         "price": [
             {
-                "currency": null,
-                "date": null,
-                "discount": null,
-                "price": null,
-                "price_id": null
+                "price_id": 1,
+                "discount": "-70%",
+                "price": 120,
+                "date": "Sun Apr 29 15:48:33 2018",
+                "currency": "NPR"
             }
-        ],
-        "product_hash": null,
-        "product_id": null,
-        "product_image_link": null,
-        "product_link": null,
-        "product_name": null,
-        "site_name": null
+        ]
     }
 ]
