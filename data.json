@@ -1,0 +1,21 @@
+[
+    {
+        "date_created": null,
+        "date_modified": null,
+        "price": [
+            {
+                "currency": null,
+                "date": null,
+                "discount": null,
+                "price": null,
+                "price_id": null
+            }
+        ],
+        "product_hash": null,
+        "product_id": null,
+        "product_image_link": null,
+        "product_link": null,
+        "product_name": null,
+        "site_name": null
+    }
+]
