@@ -2,6 +2,9 @@
 rawdata.html
 output.txt
 products.csv
-# Practise JSON library
+# Python CACHE
+__pycache__/
+# Practise on dictionary and JSON
 sample.json
 json.py
+dict.py
