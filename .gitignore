@@ -1,14 +1,5 @@
 # Practise to scrap data
 rawdata.html
-output.txt
-products.csv
-# Python CACHE
-__pycache__/
-# Practise on dictionary and JSON
-sample.json
-json.py
-dict.py
-# Modules
+# Modules and databases
 modules/
-data.json
 database/
