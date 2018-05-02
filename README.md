@@ -14,9 +14,14 @@ It is a scrapping project. It uses Python sript to scrape data from one of the p
 # Libraries used
 ```python
 import requests
+import urllib
+import urllib.parse
+import json
+import time
 from bs4 import BeautifulSoup as soup
 ```
 
 # Output format
 The script returns a CSV (Comma Separted Value) format that is used universally. This file can be opened from Microsoft Excel.
 ![Output Screenshot](docs/scr1.png)
+![Output Screenshot](docs/scr2.png)
