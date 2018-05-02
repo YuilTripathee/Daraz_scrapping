@@ -1,8 +1,14 @@
 # Introduction
 It is a scrapping project. It uses Python sript to scrape data from one of the page in daraz.com (i.e. DSLR section) and renders the result in a text file (output.txt).
 
+# Skill sets implemented
+1. Scraping data from unstructed resources (like webpages)
+2. Object oriented concept
+3. JSON and data structure
+4. Sorting and searching algorithm
+
 # How to run?
-1. Run the script.
+1. Run the script `main.py`.
 2. Get the information from output and get your product.
 
 # Libraries used

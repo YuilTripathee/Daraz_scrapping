@@ -8,3 +8,7 @@ __pycache__/
 sample.json
 json.py
 dict.py
+# Modules
+modules/
+data.json
+database/
