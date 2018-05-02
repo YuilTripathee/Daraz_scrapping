@@ -5,7 +5,6 @@ import urllib.parse
 import json
 import time
 
-
 class Product:
     def __init__(self, sku_data, name, link, image_link):
         self.sku = sku_data
@@ -16,9 +15,9 @@ class Product:
         self.price = []
         pass
     
-    def appendprice(self, ):
-        
+    def appendprice(self, ): 
         pass
+    
     def pushdata(self, json_data):
         product = {
             'sku' : self.sku,
@@ -113,7 +112,6 @@ if __name__ == '__main__':
     ss.sort_by_sku(data_file)
     
     scrap.run(data_file, primary_key)
-    
     
     # write to the file finally
     with open('database/dataset.json', 'w', encoding="utf-8") as fp:
