@@ -3,6 +3,33 @@ from bs4 import BeautifulSoup as soup
 import urllib
 import urllib.parse
 import json
+import time
+
+
+class Product:
+    def __init__(self, sku_data, name, link, image_link):
+        self.sku = sku_data
+        self.name = name
+        self.link = link
+        self.image_link = image_link
+        self.date_issued = time.asctime()
+        self.price = []
+        pass
+    
+    def appendprice(self, ):
+        
+        pass
+    def pushdata(self, json_data):
+        product = {
+            'sku' : self.sku,
+            'name' : self.name,
+            'link' : self.link,
+            'image_link' : self.image_link,
+            'date-issued' : self.date_issued
+        }
+        json_data.append(product)
+
+    
 
 class Scraper:
     def __init__(self, url):
@@ -11,20 +38,23 @@ class Scraper:
         self.containers = self.my_soup.find_all('div', {'class' : ['sku', '-gallery']})
         self.product = self.containers[13]
           
-    def run(self, json_data):
+    def run(self, json_data, primary_key):
         for item in self.containers:
             if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
                 if index_finder(json_data, self.scrap_sku(item)):
                     print('Item already on index')
-                    pass
+                    break
                 else:
-                    dict_to_add = {
-                        'sku' : self.scrap_sku(item)
-                    }
-                    json_data.append(dict_to_add)
-                    print('Item not in index')
-                    pass
-                
+                    primary_key += 1
+                    prod_cont = item.a.find_all("div")
+                    sku = self.scrap_sku(item)
+                    name = item.a.h2.text.strip().replace('\u00a0','')
+                    link =  item.a['href']
+                    image_link = prod_cont[0].noscript.img['src']
+                    
+                    p = Product(sku, name, link, image_link)
+                    p.appendprice()
+                    p.pushdata(json_data)
             else:
                 print('No discount here')
             
@@ -72,25 +102,20 @@ if __name__ == '__main__':
     scrap = Scraper('https://www.daraz.com.np/earphones-headsets/')
 
     # data collection
-    with open('database/dataset.json', 'r') as fp:
+    with open('database/dataset.json', 'r', encoding="utf-8") as fp:
         data_file = json.load(fp)
     # configuration text file for id
     with open('database/id_config.txt', 'r') as fp:
-        last_id = int(fp.read())
+        primary_key = int(fp.read())
+
+    # sort data in order of sku
+    ss = SearchSort()
+    ss.sort_by_sku(data_file)
     
-    scrap.run(data_file)
+    scrap.run(data_file, primary_key)
     
-    # index_rank = index_finder(data_file)
-    # if index_rank:   
-    #     print('Product already present and price is constant, no need to change')
-    # else:
-    #     print('This product is not in our database. It should be added.')
-    #     dict_to_add = {
-    #         'sku' : sku_web
-    #     }
-    #     data_file.append(dict_to_add)
     
     # write to the file finally
-    with open('database/dataset.json', 'w') as fp:
-        json.dump(data_file, fp)
-    
+    with open('database/dataset.json', 'w', encoding="utf-8") as fp:
+        json.dump(ss.sort_by_sku(data_file), fp, indent=4, sort_keys=True)
+    print(len(data_file))
