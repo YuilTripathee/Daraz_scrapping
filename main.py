@@ -26,7 +26,18 @@ class Price:
         self.price.append(self.price_data)
         return self.price
 
-    def updateprice(self):
+    def updateprice(self, json_data_unit):
+        self.data_store = json_data_unit
+        previous_id = self.data_store['price'][-1]['id']
+        self.id = previous_id + 1
+        self.price_data = {
+            'id' : self.id,
+            'discount' : self.product_discount,
+            'price' : self.product_price,
+            'date' : time.asctime(),
+            'currency' : 'NPR'
+        }
+        self.data_store['price'].append(self.price_data)
         pass
 
 # product class for pushing data into json
@@ -79,8 +90,14 @@ class Scraper:
                 # binary search if it is previous product, check by SKU
                 if index_finder(json_data, self.scrap_sku(item)):
                     # scrap the price and compare
-                    print('Item already present')
-                    break
+                    index = index_finder(json_data, self.scrap_sku(item))
+                    data = json_data[index]
+                    prod_cont = item.a.find_all("div")
+                    product_discount = prod_cont[1].find_all("span")[0].text
+                    price_mini = prod_cont[1].find_all("span")[1]
+                    product_price = price_mini.span.find_all("span")[1]['data-price']
+                    p = Price(product_discount, product_price)
+                    p.updateprice(data)
                 # if new item, push to JSON
                 else:
                     # increment the index
