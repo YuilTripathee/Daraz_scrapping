@@ -1,7 +1,7 @@
 # Introduction
 It is a scrapping project. It uses Python sript to scrape data from one of the page in daraz.com (i.e. DSLR section) and renders the result in a text file (output.txt).
 
-# Skill sets implemented
+# Skills covered
 1. Scraping data from unstructed resources (like webpages)
 2. Object oriented concept
 3. JSON and data structure
