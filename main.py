@@ -5,35 +5,57 @@ import urllib.parse
 import json
 import time
 from bs4 import BeautifulSoup as soup
+import bs4
 
 # price class to check and push price
 class Price:
-    def __init__(self):
-        pass
+    def __init__(self, product_discount, product_price):
+        self.id = 1
+        self.product_discount = product_discount
+        self.product_price = int(product_price)
     
-    def pushprice(self):
+    def insertprice(self):
+        self.price_data = {
+            'id' : self.id,
+            'disount' : self.product_discount,
+            'price' : self.product_price,
+            'date' : time.asctime(),
+            'currency' : 'NPR'
+        }
+        self.price = []
+        self.price.append(self.price_data)
+        return self.price
+
+    def updateprice(self):
         pass
 
 # product class for pushing data into json
 class Product:
-    def __init__(self, sku_data, name, link, image_link, primary_key):
+    def __init__(self, sku_data, name, link, image_link, primary_key, category, discount, price):
         self.sku = sku_data
         self.id = primary_key
         self.name = name
         self.link = link
         self.image_link = image_link
         self.date_issued = time.asctime()
+        self.category = category
+        self.product_discount = discount
+        self.product_price = price
         self.price = []
         pass
-    
+
     def pushdata(self, json_data):
+        price = Price(self.product_discount, self.product_price)
+        self.price = price.insertprice()
         product = {
             'sku' : self.sku,
             'id' : self.id,
             'name' : self.name,
+            'category' : self.category,
             'link' : self.link,
             'image_link' : self.image_link,
-            'date-issued' : self.date_issued
+            'date-issued' : self.date_issued,
+            'price' : self.price
         }
         json_data.append(product)
     
@@ -42,8 +64,12 @@ class Scraper:
     def __init__(self, url):
         self.r = requests.get(url)
         self.my_soup = soup(self.r.text, 'html.parser')
+        self.cat = self.my_soup.h1
+        for tag in self.cat.find_all('span'):
+            tag.replace_with('')
+        self.category = self.cat.text
         self.containers = self.my_soup.find_all('div', {'class' : ['sku', '-gallery']})
-        self.product = self.containers[13]
+        self.product = self.containers[1]
           
     def run(self, json_data, key_count):
         # iterate over each item
@@ -52,7 +78,8 @@ class Scraper:
             if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
                 # binary search if it is previous product, check by SKU
                 if index_finder(json_data, self.scrap_sku(item)):
-                    print('Item already on index')
+                    # scrap the price and compare
+                    print('Item already present')
                     break
                 # if new item, push to JSON
                 else:
@@ -64,8 +91,11 @@ class Scraper:
                     name = item.a.h2.text.strip().replace('\u00a0','')
                     link =  item.a['href']
                     image_link = prod_cont[0].noscript.img['src']
+                    product_discount = prod_cont[1].find_all("span")[0].text
+                    price_mini = prod_cont[1].find_all("span")[1]
+                    product_price = price_mini.span.find_all("span")[1]['data-price']
                     # push to Product object
-                    p = Product(sku, name, link, image_link, key_count)
+                    p = Product(sku, name, link, image_link, key_count, self.category, product_discount, product_price)
                     # push to JSON
                     p.pushdata(json_data)
             else:
@@ -122,7 +152,7 @@ def index_finder(json_list, sku_data):
 # main function
 if __name__ == '__main__': 
     # scraping variable
-    scrap = Scraper('https://www.daraz.com.np/computing-gaming/')
+    scrap = Scraper('https://www.daraz.com.np/led-tvs/')
 
     # extracting data from internal source
     with open('database/dataset.json', 'r', encoding="utf-8") as fp:
@@ -139,6 +169,6 @@ if __name__ == '__main__':
     
     # write to the file finally
     with open('database/dataset.json', 'w', encoding="utf-8") as fp:
-        json.dump(ss.sort_by_sku(data_file, 'id'), fp, indent=4, sort_keys=True)
+        json.dump(ss.sort_by_sku(data_file, 'sku'), fp, indent=4, sort_keys=False)
         fp.close()
     print('Total data : ', len(data_file))
