@@ -6,6 +6,7 @@ It is a scrapping project. It uses Python sript to scrape data from one of the p
 2. Object oriented concept
 3. JSON and data structure
 4. Sorting and searching algorithm
+5. Indexing objects in array
 
 # How to run?
 1. Run the script `main.py`.
