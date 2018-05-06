@@ -53,12 +53,12 @@ class Product:
         self.category = category
         self.product_discount = discount
         self.product_price = price
-        self.price = []
+        self.prices = []
         pass
 
     def pushdata(self, json_data):
         price = Price(self.product_discount, self.product_price)
-        self.price = price.insertprice()
+        self.prices = price.insertprice()
         product = {
             'sku' : self.sku,
             'id' : self.id,
@@ -67,7 +67,7 @@ class Product:
             'link' : self.link,
             'image_link' : self.image_link,
             'date-issued' : self.date_issued,
-            'price' : self.price
+            'prices' : self.prices
         }
         json_data.append(product)
     
@@ -89,33 +89,28 @@ class Scraper:
         for item in self.containers:
             # check for discount
             if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
+                # scraping items
+                prod_cont = item.a.find_all("div")
+                product_discount = prod_cont[1].find_all("span")[0].text
+                price_mini = prod_cont[1].find_all("span")[1]
+                product_price = price_mini.span.find_all("span")[1]['data-price']
+                sku = self.scrap_sku(item)
+                name = item.a.h2.text.strip().replace('\u00a0','')
+                link =  item.a['href']
+                image_link = prod_cont[0].noscript.img['src']
                 # binary search if it is previous product, check by SKU, and update price only
-                if index_finder(json_data, self.scrap_sku(item)) != None:
-                    # scrap the price and compare
-                    index = index_finder(json_data, self.scrap_sku(item))
-                    data = json_data[index]
-                    prod_cont = item.a.find_all("div")
-                    product_discount = prod_cont[1].find_all("span")[0].text
-                    price_mini = prod_cont[1].find_all("span")[1]
-                    product_price = price_mini.span.find_all("span")[1]['data-price']
+                if index_finder(json_data, self.scrap_sku(item)) != None: 
+                    data = json_data[index_finder(json_data, self.scrap_sku(item))]
+                    # push to price object
                     p = Price(product_discount, product_price)
                     p.updateprice(data)
                 # if new item, push to JSON
                 else:
                     # increment the index
                     key_count += 1
-                    # scrap
-                    prod_cont = item.a.find_all("div")
-                    sku = self.scrap_sku(item)
-                    name = item.a.h2.text.strip().replace('\u00a0','')
-                    link =  item.a['href']
-                    image_link = prod_cont[0].noscript.img['src']
-                    product_discount = prod_cont[1].find_all("span")[0].text
-                    price_mini = prod_cont[1].find_all("span")[1]
-                    product_price = price_mini.span.find_all("span")[1]['data-price']
-                    # push to Product object
+                    # push to Product object and then to JSON
                     p = Product(sku, name, link, image_link, key_count, self.category, product_discount, product_price)
-                    # push to JSON
+                    print(p.sku)
                     p.pushdata(json_data)
             # flush out items without discount
             else:
