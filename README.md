@@ -14,12 +14,12 @@ It is a scrapping project. It uses Python sript to scrape data from one of the p
 
 # Libraries used
 ```python
-import requests
-import urllib
-import urllib.parse
-import json
-import time
-from bs4 import BeautifulSoup as soup
+import requests # to make HTTP requests
+import urllib   # standard python URL library
+import urllib.parse # parse object from standard python URL library
+import json       # standard python JSON libary
+import time       # standard python library for time
+from bs4 import BeautifulSoup as soup   # import beautiful soup module to scrap data
 ```
 
 # Output format
