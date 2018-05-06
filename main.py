@@ -1,19 +1,19 @@
-# importing necessary libraries
-import requests
-import urllib
-import urllib.parse
-import json
-import time
-from bs4 import BeautifulSoup as soup
-import bs4
+import requests # to make HTTP requests
+import urllib   # standard python URL library
+import urllib.parse # parse object from standard python URL library
+import json       # standard python JSON libary
+import time       # standard python library for time
+from bs4 import BeautifulSoup as soup   # import beautiful soup module to scrap data
 
 # price class to check and push price
 class Price:
+    # initializing price for products
     def __init__(self, product_discount, product_price):
         self.id = 1
         self.product_discount = product_discount
         self.product_price = int(product_price)
     
+    # insert price in new product
     def insertprice(self):
         self.price_data = {
             'id' : self.id,
@@ -26,6 +26,7 @@ class Price:
         self.price.append(self.price_data)
         return self.price
 
+    # update price in previous product
     def updateprice(self, json_data_unit):
         self.data_store = json_data_unit
         previous_id = self.data_store['price'][-1]['id']
@@ -72,6 +73,7 @@ class Product:
     
 # scraping class
 class Scraper:
+    # initializes variable objects
     def __init__(self, url):
         self.r = requests.get(url)
         self.my_soup = soup(self.r.text, 'html.parser')
@@ -83,12 +85,12 @@ class Scraper:
         self.product = self.containers[1]
           
     def run(self, json_data, key_count):
-        # iterate over each item
+        # iterate the scrapping process over each item
         for item in self.containers:
             # check for discount
             if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
-                # binary search if it is previous product, check by SKU
-                if index_finder(json_data, self.scrap_sku(item)):
+                # binary search if it is previous product, check by SKU, and update price only
+                if index_finder(json_data, self.scrap_sku(item)) != None:
                     # scrap the price and compare
                     index = index_finder(json_data, self.scrap_sku(item))
                     data = json_data[index]
@@ -115,8 +117,9 @@ class Scraper:
                     p = Product(sku, name, link, image_link, key_count, self.category, product_discount, product_price)
                     # push to JSON
                     p.pushdata(json_data)
+            # flush out items without discount
             else:
-                print('No discount here')  
+                pass  
         # update index in our primary key (id)
         key_config = {
             "id_count" : key_count
@@ -158,7 +161,7 @@ class SearchSort:
                 hi = mid
             else:
                 lo = mid + 1
-        return False
+        return None
     
 # function to find if product from scrap is already present and returns its index in array
 def index_finder(json_list, sku_data):
@@ -168,24 +171,64 @@ def index_finder(json_list, sku_data):
 
 # main function
 if __name__ == '__main__': 
-    # scraping variable
-    scrap = Scraper('https://www.daraz.com.np/led-tvs/')
-
-    # extracting data from internal source
-    with open('database/dataset.json', 'r', encoding="utf-8") as fp:
-        data_file = json.load(fp)
-    # configuration text file for id
-    with open('database/config.json', 'r') as fp:
-        key_number = json.load(fp)
-
-    # sort data in order of sku
-    ss = SearchSort()
-    ss.sort_by_sku(data_file, 'sku')
     
-    scrap.run(data_file, key_number['id_count'])
+    # scraping variable
+    urls_to_scrape = [
+        'https://www.daraz.com.np/mens-digital/',
+        'https://www.daraz.com.np/cables/',
+        'https://www.daraz.com.np/motorcycles/',
+        'https://www.daraz.com.np/led-tvs/',
+        'https://www.daraz.com.np/smart-tvs/',
+        'https://www.daraz.com.np/selfie-sticks-1/',
+        'https://www.daraz.com.np/mobile-cases-covers-protection/',
+        'https://www.daraz.com.np/android-cases-covers/',
+        'https://www.daraz.com.np/cases-covers-for-iphone/',
+        'https://www.daraz.com.np/power-banks/',
+        'https://www.daraz.com.np/vr-headsets/'
+    ]
+
+    # check it file is empty and initializes the structure of database
+    with open('database/dataset.json', 'r+', encoding='utf-8') as fp:
+        # check if data.json is empty and write empty array into it, also initialize config.json
+        if fp.read() == '':
+            fp.write('[]')
+            fp.close()
+            with open('database/config.json','w', encoding='utf-8') as ip:
+                # initialization for config.json
+                init = {
+                    'id_count' : 0
+                }
+                json.dump(init, ip, indent=4)
+                ip.close()
+    
+    # extracting data from internal source
+    with open('database/dataset.json', 'r', encoding='utf-8') as fp:
+        data_file = json.load(fp)      
+    
+    # to initialise index for file having data
+    with open('database/config.json','w', encoding='utf-8') as ip:
+        init_full = {
+            'id_count' : len(data_file)
+        }
+        json.dump(init_full, ip, indent=4)
+        ip.close()
+    
+    # loading configuration text file for id
+    with open('database/config.json', 'r', encoding='utf-8') as fp:
+        index = json.load(fp)
+
+    # scrap through list of urls
+    for link in urls_to_scrape:
+        scrap = Scraper(link)
+        # sort data in order of sku to make binary search
+        ss = SearchSort()
+        ss.sort_by_sku(data_file, 'sku')
+        scrap.run(data_file, index['id_count'])
     
     # write to the file finally
     with open('database/dataset.json', 'w', encoding="utf-8") as fp:
         json.dump(ss.sort_by_sku(data_file, 'sku'), fp, indent=4, sort_keys=False)
         fp.close()
     print('Total data : ', len(data_file))
+
+    print('Script executed sucessfully')
