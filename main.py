@@ -4,6 +4,7 @@ import urllib.parse # parse object from standard python URL library
 import json       # standard python JSON libary
 import time       # standard python library for time
 from bs4 import BeautifulSoup as soup   # import beautiful soup module to scrap data
+import pickle   # pickle module to support python serializable format (aka Pickle)
 
 # class to determine a unit price format
 class PriceFormat:
@@ -217,6 +218,7 @@ if __name__ == '__main__':
     
     # encoding list from JSON to standard python objects
     encoded_list = encodeFromJSON(data_from_file)
+
     ## end of initiation ##
 
     ## start scraping robot ##
@@ -242,4 +244,9 @@ if __name__ == '__main__':
         with open('database/config.json', 'w', encoding="utf-8") as fp:
             json.dump(key_config, fp, indent=4, sort_keys=True) 
             fp.close()    
+
+    # encoded list of python objects in serializable
+    with open('database/serializable', 'wb') as fp:
+        fp.write(pickle.dumps(encoded_list))
+        fp.close
     
