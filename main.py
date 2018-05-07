@@ -246,7 +246,7 @@ if __name__ == '__main__':
             fp.close()    
 
     # encoded list of python objects in serializable
-    with open('database/serializable', 'wb') as fp:
+    with open('database/serializable.p', 'wb') as fp:
         fp.write(pickle.dumps(encoded_list))
         fp.close
     
