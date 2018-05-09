@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup as soup   # import beautiful soup module to scrap 
 import pickle   # pickle module to support python serializable format (aka Pickle)
 
 # class to determine a unit price format
-class PriceFormat:
+class Price:
     def __init__(self, price_object):
         self.id = price_object['id']
         self.discount = price_object['discount']
@@ -20,7 +20,7 @@ class PriceFormat:
         return '%s' % self.id
 
 # class to determine a unit product format
-class ProductFormat:
+class Product:
     def __init__(self, data_object):
         self.sku = data_object['sku']
         self.id = data_object['id']
@@ -31,7 +31,7 @@ class ProductFormat:
         self.date_issued = data_object['date_issued']
         self.prices = []
         for item in data_object['prices']:
-            unit = PriceFormat(item)
+            unit = Price(item)
             self.prices.append(unit)
             pass
         self.recent_price_id = self.prices[-1].id
@@ -60,15 +60,16 @@ class Scraper:
                 prod_cont = item.a.find_all("div")
                 product_discount = prod_cont[1].find_all("span")[0].text
                 price_mini = prod_cont[1].find_all("span")[1]
-                product_price = price_mini.span.find_all("span")[1]['data-price']
+                product_price = int(price_mini.span.find_all("span")[1]['data-price'])
                 sku = item['data-sku']
                 name = item.a.h2.text.strip().replace('\u00a0','')
                 link =  item.a['href']
                 image_link = prod_cont[0].noscript.img['src']
                 # binary search if it is previous product, check by SKU, and update price only
-                if index_finder(encoded_list, sku) != None: 
+                a = get_index(encoded_list, sku)
+                if a != None: 
                     # get old object
-                    old_object = encoded_list[index_finder(encoded_list, sku)]
+                    old_object = encoded_list[a]
                     # make price dictionary to push to price object
                     last_price = old_object.prices[-1].id
                     price = {
@@ -79,7 +80,7 @@ class Scraper:
                         'currency' : 'NPR'
                     }
                     # push to price object
-                    old_object.prices.append(PriceFormat(price))
+                    old_object.prices.append(Price(price))
                 # if new item, push to JSON
                 else:
                     # increment the index
@@ -104,7 +105,7 @@ class Scraper:
                         ]
                     }
                     # push to Product list as object
-                    encoded_list.append(ProductFormat(product))
+                    encoded_list.append(Product(product))
                     pass
             # flush out items without discount
             else:
@@ -140,7 +141,7 @@ class SearchSort:
         return None
     
 # function to find if product from scrap is already present and returns its index in array
-def index_finder(encoded_list, sku_data):
+def get_index(encoded_list, sku_data):
     search = SearchSort()
     index_num = search.search_sku(encoded_list, sku_data)
     return index_num
@@ -149,7 +150,7 @@ def index_finder(encoded_list, sku_data):
 def encodeFromJSON(list):
     new_list = []
     for item in list:
-        new_list.append(ProductFormat(item))
+        new_list.append(Product(item))
     return new_list
 
 # decoder to decode Python objects to array of dict (for JSON)
