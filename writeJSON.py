@@ -1,13 +1,4 @@
 import json       # standard python JSON libary
-# Import smtplib for the actual sending function
-import smtplib
-# For guessing MIME type
-import mimetypes
-# Import the email modules we'll need
-import email
-import email.mime.application
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 
 # class to determine a unit price format
 class Price:
@@ -105,31 +96,3 @@ if __name__ == '__main__':
         fp.write(json.dumps(items_to_show, indent=4))
         fp.close()
     
-    # Create a text/plain message
-    msg = MIMEMultipart()
-    msg['From'] = 'Yuil Tripathee <ronnietr@gmail.com>'
-    msg['To'] = 'Yuil Tripathee <yuiltripathee79@gmail.com>'
-    # msg['CC'] = 'Bishal Pun <bishalpun13@gmail.com>'
-    msg['Subject'] = 'Sample email attachment'
-    print('Mail header initialized')
-
-    # The mail body also just as attachment
-    with open('data_to_send.json', 'r') as text:
-        body = MIMEText(text.read())
-        msg.attach(body)
-        pass
-    print('Body written')
-
-    # Mail engine
-    try:
-        with smtplib.SMTP('smtp.gmail.com', 587) as mail_sys:
-            mail_sys.ehlo()
-            mail_sys.starttls()
-            mail_sys.login('ronnietr7@gmail.com','ronnie@15')
-            mail_sys.sendmail('ronnietr7@gmail.com',['yuiltripathee79@gmail.com'], msg.as_string())
-            print('Mail sent sucessfully')
-            pass
-    except Exception:
-        print('Mail failed to transfer')
-        raise
-
