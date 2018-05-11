@@ -188,6 +188,10 @@ if __name__ == '__main__':
     # scraping variable
     urls_to_scrape = [
         'https://www.daraz.com.np/cables/',
+        'https://www.daraz.com.np/computing-gaming/',
+        'https://www.daraz.com.np/mobiles-tablets-smartwatches/',
+        'https://www.daraz.com.np/wireless-speakers/',
+        'https://www.daraz.com.np/vr-headsets/'
     ]
 
     # check it file is empty and initializes the structure of database
