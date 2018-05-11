@@ -18,8 +18,8 @@ Coded with 💙 by Yuil Tripathee
     # header in HTML body tag
     header_in_body = """<body style="font-family: 'Roboto', 'sans-serif'; background-color: #f1f1f1; font-size: 15px; line-height: 1.5; margin: 0; ">
     <!-- header -->
-    <div style="background-color: #fff; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); padding: 0.01em 16px; text-align: center;">
-        <p style="color: #757575; font-size: 24px; font-family: 'Roboto', sans-serif; margin: 1em; ">Today's best picks for online shopping</p>
+    <div style="background-color: #2196F3; box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); padding: 0.01em 16px; text-align: center;">
+        <p style="color: #fff; font-size: 24px; font-family: 'Roboto', sans-serif; margin: 1em; ">Today's best picks for online shopping</p>
     </div>"""
     # adding to html page
     html_page = html_page + header_in_body
@@ -27,7 +27,7 @@ Coded with 💙 by Yuil Tripathee
     # HTML body section (other than header)
     html_body_head = """
     <!-- body -->
-    <div style="padding: 0.01em 16px;">
+    <div style="padding: 5px;">
         <div style="content : ''; display : table; clear : both">
         <!-- items to render -->
     """
@@ -42,9 +42,9 @@ Coded with 💙 by Yuil Tripathee
     product_content = """"""
     for product in json_list:
         product_head = """
-        <div style="padding : 8px 8px; width: 33.33%; float: left;">
-            <div style="min-height: 266px; background-color: #fff; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12); padding: 0.01em 16px; border-radius: 4px; ">
-                <p style="text-align: center; font-size: 18px;"><b>"""
+        <div style="width: 30%; float: left; font-family: 'Roboto', sans-serif;">
+            <div style="min-height: 266px; background-color: #fff; box-shadow: 0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12); border-radius: 4px; ">
+                <p style="text-align: center; font-size: 18px; font-family: 'Roboto', sans-serif;"><b>"""
         product_name = product['name']
         close_prduct_head = """</b>
                 </p>
