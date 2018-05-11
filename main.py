@@ -63,13 +63,13 @@ class Scraper:
                 product_price = int(price_mini.span.find_all("span")[1]['data-price'])
                 sku = item['data-sku']
                 name = item.a.h2.text.strip().replace('\u00a0','')
-                link =  item.a['href']
-                image_link = prod_cont[0].noscript.img['src']
+                link =  urllib.parse.quote_plus(item.a['href'])
+                image_link = urllib.parse.quote_plus(prod_cont[0].noscript.img['src'])
                 # binary search if it is previous product, check by SKU, and update price only
-                a = get_index(encoded_list, sku)
-                if a != None: 
+                index = get_index(encoded_list, sku)
+                if index != None: 
                     # get old object
-                    old_object = encoded_list[a]
+                    old_object = encoded_list[index]
                     # make price dictionary to push to price object
                     last_price = old_object.prices[-1].id
                     price = {
