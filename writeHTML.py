@@ -57,6 +57,7 @@ Coded with 💙 by Yuil Tripathee
     # open JSON file to get the data
     with open('data_to_send.json', 'r', encoding='utf-8') as fp:
         json_list = json.load(fp)
+        json_list.reverse()
 
     # iteration through the products
     product_content = """"""
