@@ -77,9 +77,14 @@ if __name__ == '__main__':
         encoded_list = encodeFromJSON(data_from_file)
         fp.close()
     
+    # extracting database server configuration
+    with open('database/DBconf.json', 'r', encoding="utf-8") as fp:
+        dbConf = json.load(fp)
+        fp.close()
+    
 
     # Open database connection
-    db = pymysql.connect("localhost", "root", "123456", "TESTDB")
+    db = pymysql.connect(dbConf['server'], dbConf['username'], dbConf['password'], dbConf['database'])
     # connect(server, username, password, database)
 
     # prepare a cursor object using cursor() method
