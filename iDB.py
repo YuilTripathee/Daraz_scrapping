@@ -15,4 +15,9 @@ if __name__ == '__main__':
     # work on queries
     while True:
         command = input('> ')
-        cursor.execute(command)
+        try:
+            cursor.execute(command)
+            db.commit()
+        except:
+            print('Error')
+            db.rollback()
