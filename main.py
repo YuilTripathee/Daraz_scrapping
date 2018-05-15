@@ -115,7 +115,7 @@ class Scraper:
 class SearchSort:
     # sorts the data making SKU as index
     def sort_by_sku(self, json_list, reference):
-        if len(json_list) < 2: return json_list
+        if len(json_list) < 2: return json_list # if the array has single element, it is already sorted
         ipivot = len(json_list)//2        # dividing the array
         pivot = json_list[ipivot]         # partitioning the array
         if type(json_list[0]) is int:
@@ -222,10 +222,10 @@ if __name__ == '__main__':
         fp.close()
     
     # encoding list from JSON to standard python objects
-    encoded_list = encodeFromJSON(data_from_file)
+    ss = SearchSort()
+    encoded_list = encodeFromJSON(ss.sort_by_sku(data_from_file, 'sku'))
 
     ## end of initiation ##
-
     ## start scraping robot ##
     for url in urls_to_scrape:
         scrap = Scraper(url)
@@ -255,3 +255,4 @@ if __name__ == '__main__':
         fp.write(pickle.dumps(encoded_list))
         fp.close
     
+    print('Operation performed over %s products.' % len(encoded_list))
