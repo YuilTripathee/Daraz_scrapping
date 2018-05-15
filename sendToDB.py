@@ -120,7 +120,7 @@ if __name__ == '__main__':
     # Open database connection
     db = pymysql.connect(dbConf['server'], dbConf['username'], dbConf['password'], dbConf['database'])
     # connect(server, username, password, database)
-
+    print('Established connection with database server.')
     # prepare a cursor object using cursor() method
     cursor = db.cursor()
 
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     # fetch a single row using fetchone() method
     db_info = cursor.fetchone()
     
-    # send data to MariaDB server
+    # send product data to MariaDB server
     for product in encoded_list:
         # for finding category
         if product.category == 'Cables':
@@ -199,10 +199,12 @@ if __name__ == '__main__':
             if prices_DB[-1]['date'] != product.prices[-1].date:
                 price = product.prices[-1]
                 insert_query = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s','%s','%s')" % (foreign_key, price.price, price.discount, price.date, price.currency)
+                update_product_date = "UPDATE products SET date_updated = '%s' WHERE id = '%d'" % (price.date, foreign_key)
                 try:
                     cursor.execute(insert_query)
+                    cursor.execute(update_product_date)
                     db.commit()
-                    print('New price updated on : ', foreign_key)
+                    print('New price updated on : ', product.sku)
                     continue
                 except:
                     db.rollback()
@@ -211,13 +213,14 @@ if __name__ == '__main__':
             else:
                 print('Price already present!!!')
                 continue
+        # put the price entry for new product
         else:
             for price in product.prices:
                 insert_query = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s','%s','%s')" % (foreign_key, price.price, price.discount, price.date, price.currency)
                 try:
                     cursor.execute(insert_query)
                     db.commit()
-                    print('New price added')
+                    print('New price added on : ', product.sku)
                     continue
                 except:
                     db.rollback()
