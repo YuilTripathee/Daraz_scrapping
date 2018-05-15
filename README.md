@@ -20,9 +20,10 @@ import urllib.parse # parse object from standard python URL library
 import json       # standard python JSON libary
 import time       # standard python library for time
 from bs4 import BeautifulSoup as soup   # import beautiful soup module to scrap data
+import pickle   # pickle module to support python serializable format (aka Pickle)
 ```
 
 # Output format
-The script returns a CSV (Comma Separted Value) format that is used universally. This file can be opened from Microsoft Excel.
+The script returns a JSON (JavaScript Object Notation) format that is used universally. This file can be opened from anywhere you want using APIs.
 ![Output Screenshot](docs/scr1.png)
 ![Output Screenshot](docs/scr2.png)
