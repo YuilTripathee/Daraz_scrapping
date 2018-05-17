@@ -28,56 +28,13 @@ def test():
 def product_print():
     return jsonify(products)
 
-# products in cable category
-@app.route('/products/cables/', methods=['GET'])
-def cable_print():
-    cables = []
-    for product in products:
-        if product['category'] == 'Cables':
-            cables.append(product)
-    return jsonify(cables)
-
-# products in wireless speakers category
-@app.route('/products/wspeakers/', methods=['GET'])
-def wspeakers_print():
-    wspeakers = []
-    for product in products:
-        if product['category'] == 'Wireless Speakers':
-            wspeakers.append(product)
-    return jsonify(wspeakers)
-
-# products in Computers and Gaming category
-@app.route('/products/compugame/', methods=['GET'])
-def compugame_print():
-    compugame = []
-    for product in products:
-        if product['category'] == 'Computing & Gaming':
-            compugame.append(product)
-    return jsonify(compugame)
-
-# products in Smartwatches
-@app.route('/products/smartwatch/', methods=['GET'])
-def smartwatch_print():
-    smartwatch = []
-    for product in products:
-        if product['category'] == 'Smartwatches':
-            smartwatch.append(product)
-    return jsonify(smartwatch)
-
-# products in Smartwatches
-@app.route('/products/VR_Head/', methods=['GET'])
-def VR_Head_print():
-    VR_Head = []
-    for product in products:
-        if product['category'] == 'VR Headsets':
-            VR_Head.append(product)
-    return jsonify(VR_Head)
-
-# # individual product
-# @app.route('/product/<string:sku>/', methods=['GET'])
-# def product(sku):
-#     product_unit = [product for product in products if product['sku'] == sku]
-#     return jsonify({"product" : product_unit[0]})
+# category of products
+@app.route('/products/category/', methods=['GET'])
+def category_print():
+    args = request.args
+    category = args['category']
+    category_data = [product for product in products if product['category'] == category]
+    return jsonify({ "category" : category_data})
 
 # individual product
 @app.route('/product/', methods=['GET'])

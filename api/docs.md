@@ -27,11 +27,7 @@ host_port = 'http://localhost://8080/'
  Operation | Procedure (REST API link) 
 | --------- | ----------|
 | To access all products | `host_port/products/` |
-| To access products under cable category | `host_port/products/cables/` |
-| To access products under smartwatch category | `host_port/products/smartwatch/` |
-| To access products under Computer and Gaming category | `host_port/products/compugame/` |
-| To access products under Wireless Speakers category | `host_port/products/wspeakers/` |
-| To access products under VR Headsets category | `host_port/products/VR_Head/` |
+| To access products under a paricular category | `host_port/products/category/?category='category` Here, category are of following types: `Cables`, `Wireless Speakers`, `Computing & Gaming`, `Smartwatches`, `VR Headsets`, etc. 
 | To access individual product | `host_port/product/?sku='sku content'` |
 
 ## Output format
