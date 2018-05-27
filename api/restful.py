@@ -2,7 +2,7 @@ import json
 from flask import Flask, jsonify, request   # import objects from the Flask model
 
 app = Flask(__name__) # define app using flask
-
+portname = 8090
 # products database
 with open('../database/dataset.json', 'r', encoding='utf-8') as fp:
     products = json.load(fp)
@@ -18,7 +18,9 @@ with open('../database/mailsubscrib.json', 'r+', encoding='utf-8') as fp:
 def test():
     data = {
         'data' : {
-            'provider' : 'Yuil Tripathee'
+            'provider' : 'Yuil Tripathee',
+            'host' : '127.0.0.1',
+            'port' : portname
         }
     }
     return jsonify(data)
@@ -26,7 +28,7 @@ def test():
 # products
 @app.route('/products/', methods=['GET'])
 def product_print():
-    return jsonify(products)
+    return jsonify({ "products" : products})
 
 # category of products
 @app.route('/products/category/', methods=['GET'])
@@ -47,4 +49,4 @@ def Indi_Product():
 
 # running flask app
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    app.run(debug=True, port=portname)
