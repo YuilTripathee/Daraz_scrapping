@@ -1,5 +1,6 @@
-# Practise to scrap data
-rawdata.html
-# Modules and databases
+ # practising modules
 blocks/
-database/
+# Raw database
+database/ 
+# Mail information
+config/mailconfig.json 
