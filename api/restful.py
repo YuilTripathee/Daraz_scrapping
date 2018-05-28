@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request   # import objects from the Flask mode
 
 app = Flask(__name__) # define app using flask
 portname = 8090
+
 # products database
 with open('../database/dataset.json', 'r', encoding='utf-8') as fp:
     products = json.load(fp)
@@ -45,7 +46,6 @@ def Indi_Product():
     sku_data = args['sku']
     product_unit = [product for product in products if product['sku'] == sku_data]
     return jsonify({"product" : product_unit[0]})
-
 
 # running flask app
 if __name__ == '__main__':
