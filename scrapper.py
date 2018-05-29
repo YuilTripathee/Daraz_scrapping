@@ -186,13 +186,10 @@ if __name__ == '__main__':
     ## start of initiation ##
     
     # scraping variable
-    urls_to_scrape = [
-        'https://www.daraz.com.np/cables/',
-        'https://www.daraz.com.np/computing-gaming/',
-        'https://www.daraz.com.np/mobiles-tablets-smartwatches/',
-        'https://www.daraz.com.np/wireless-speakers/',
-        'https://www.daraz.com.np/vr-headsets/'
-    ]
+    with open('config/scrapsite.json', 'r+', encoding='utf-8') as fp:
+        file_content = json.load(fp)
+        urls_to_scrape = file_content["sites"]
+        fp.close()
 
     # check it file is empty and initializes the structure of database
     with open('database/dataset.json', 'r+', encoding='utf-8') as fp:
@@ -210,13 +207,14 @@ if __name__ == '__main__':
     
     # extracting data from internal source
     with open('database/dataset.json', 'r', encoding='utf-8') as fp:
-        data_from_file = json.load(fp)      
+        data_from_file = json.load(fp)
+        fp.close()      
     
     # to initialise index for file having data
-    index = len(data_from_file)
+    count = len(data_from_file)
     with open('database/config.json','w', encoding='utf-8') as fp:
         init_full = {
-            'id_count' : index
+            'id_count' : count
         }
         json.dump(init_full, fp, indent=4)
         fp.close()
@@ -229,16 +227,16 @@ if __name__ == '__main__':
     ## start scraping robot ##
     for url in urls_to_scrape:
         scrap = Scraper(url)
-        scrap.run(encoded_list, index)
+        scrap.run(encoded_list, count)
     ## end of scraping robot operation ##
 
     # decoding list from list of python objects to JSON convertible
-    decoded_list = decodetoJSON(encoded_list)
+    json_list = decodetoJSON(encoded_list)
 
     # writing into JSON file
     with open('database/dataset.json', 'w', encoding="utf-8") as fp:
         ss = SearchSort()
-        json.dump(ss.sort_by_sku(decoded_list, 'sku'), fp, indent=4, sort_keys=False)
+        json.dump(ss.sort_by_sku(json_list, 'sku'), fp, indent=4, sort_keys=False)
         fp.close()
 
     # updating configuration file
