@@ -1,3 +1,4 @@
+# old scrapper system (now depreciated)
 import requests # to make HTTP requests
 import urllib   # standard python URL library
 import urllib.parse # parse object from standard python URL library
@@ -56,7 +57,7 @@ class Scraper:
         for item in self.containers:
             # check for discount
             if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
-                # scraping items
+                # scraping items to mine
                 prod_cont = item.a.find_all("div")
                 product_discount = prod_cont[1].find_all("span")[0].text
                 price_mini = prod_cont[1].find_all("span")[1]
