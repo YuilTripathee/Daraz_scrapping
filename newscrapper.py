@@ -48,9 +48,14 @@ def scraper(database_cursor, url_to_scrape):
         # Now search for the product in database relation
         primary_key_inDB = search_product_in_DB(sql_cursor, product_sku)
         if primary_key_inDB:
+            product_content = item.a.find_all("div") # contents with the product card
+            product_discount = product_content[1].find_all("span")[0].text # discount
+            product_price = int(product_content[1].find_all("span")[1].span.find_all("span")[1]['data-price']) # price
+            
             '''
                 Now, you have to just update the pricing
-                    Put up the foreign key, and set INSERT query in SQL
+                    1. Put up the foreign key, and set INSERT query in SQL
+                    2. Update new date to the products table for the product
             '''
             print("Existing product : %s " % primary_key_inDB)
             pass
@@ -65,106 +70,41 @@ def scraper(database_cursor, url_to_scrape):
                         3.1. Update its price
                     4. Discard working on the product and check on the next iteration
             '''
-            print('New product : %s' % product_sku)
-    print('Thread Ending')       
-#             # check for discount
-#             if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
-#                 # scraping items
-#                 prod_cont = item.a.find_all("div")
-#                 # marking category
-#                 # product_cat = main_soup.h1
-#                 # for tag in product_cat.find_all('span'):
-#                 #     tag.replace_with('')
-#                 # product_category = product_cat.text
-#                 product_discount = prod_cont[1].find_all("span")[0].text
-#                 price_mini = prod_cont[1].find_all("span")[1]
-#                 product_price = int(price_mini.span.find_all("span")[1]['data-price'])
-#                 sku = item['data-sku']
-#                 name = item.a.h2.text.strip().replace('\u00a0','')
-#                 link = item.a['href']
-#                 image_link = prod_cont[0].noscript.img['src']
-#                 # binary search if it is previous product, check by SKU, and update price only
-#                 index = get_index(encoded_list, sku)
-#                 if index != None: 
-#                     # get old object
-#                     old_object = encoded_list[index]
-#                     # make price dictionary to push to price object
-#                     last_price = old_object.prices[-1].id
-#                     price = {
-#                         'id' : last_price + 1,
-#                         'discount' : product_discount,
-#                         'price' : int(product_price),
-#                         'date' : time.asctime(),
-#                         'currency' : 'NPR'
-#                     }
-#                     # push to price object
-#                     old_object.prices.append(Price(price))
-#                 # if new item, push to JSON
-#                 else:
-#                     # increment the index
-#                     index_count += 1
-#                     # initialise data to push
-#                     product = {
-#                         'sku' : sku,
-#                         'id' : index_count,
-#                         'name' : name,
-#                         'category' : self.category,
-#                         'link' : link,
-#                         'image_link' : image_link,
-#                         'date_issued' : time.asctime(),
-#                         "prices" : [
-#                             {
-#                                 "id": 1,
-#                                 "discount": product_discount,
-#                                 "price": product_price,
-#                                 "date": time.asctime(),
-#                                 "currency": "NPR"
-#                             }
-#                         ]
-#                     }
-#                     # push to Product list as object
-#                     encoded_list.append(Product(product))
-#                     pass
-#             # flush out items without discount
-#             else:
-#                 pass  
+            if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
+                print('New product : %s' % product_sku)
+                product_content = item.a.find_all("div") # contents within the product card
+                # marking category
+                product_cat = main_soup.h1
+                for tag in product_cat.find_all('span'):
+                    tag.replace_with('')
+                product_category = product_cat.text # category
+                product_discount = product_content[1].find_all("span")[0].text # discount
+                price_content = product_content[1].find_all("span")[1]
+                product_price = int(price_content.span.find_all("span")[1]['data-price']) # price
+                product_name = item.a.h2.text.strip().replace('\u00a0','') # name
+                product_link = item.a['href'] # link
+                product_image_link = product_content[0].noscript.img['src'] # image link
+                '''
+                    Now, 
+                        1. put a new entry to the database.
+                        2. insert a new price
+                '''      
 '''
     Acheiving multithreading in object oriented style
 '''
-# import threading
-# import time
 
-# exitFlag = 0
-
-# class myThread (threading.Thread):
-#    def __init__(self, threadID, name, counter):
-#       threading.Thread.__init__(self)
-#       self.threadID = threadID
-#       self.name = name
-#       self.counter = counter
-#    def run(self):
-#       print ("Starting " + self.name)
-#       print_time(self.name, self.counter, 5)
-#       print ("Exiting " + self.name)
-
-# def print_time(threadName, delay, counter):
-#    while counter:
-#       if exitFlag:
-#          threadName.exit()
-#       time.sleep(delay)
-#       print ("%s: %s" % (threadName, time.ctime(time.time())))
-#       counter -= 1
-
-# # Create new threads
-# thread1 = myThread(1, "Thread-1", 1)
-# thread2 = myThread(2, "Thread-2", 2)
-
-# # Start new Threads
-# thread1.start()
-# thread2.start()
-# thread1.join()
-# thread2.join()
-# print ("Exiting Main Thread")
+class Thread4Scrap (threading.Thread):
+   def __init__(self, threadID, name, database_cursor, url_to_scrape):
+      threading.Thread.__init__(self)
+      self.threadID = threadID
+      self.name = name
+      self.cursor = database_cursor
+      self.page = url_to_scrape
+      
+   def run(self):
+      print ("Starting " + self.name)
+      scraper(self.cursor, self.page)
+      print ("Exiting " + self.name)
 
 if __name__ == '__main__':
     # getting database connection
@@ -178,7 +118,7 @@ if __name__ == '__main__':
     cursor = db.cursor()
 
     # get urls to scrape
-    target_page_url = get_target_page_urls(cursor)
+    target_page_urls = get_target_page_urls(cursor)
     
     '''
         create threads to scrap each page
@@ -187,7 +127,16 @@ if __name__ == '__main__':
     '''
  
     cursors = []
-    for i in range(0, len(target_page_url)):
+    # creating array of cursors
+    for i in range(0, len(target_page_urls)):
         cursors.append(pymysql.connect(DB_conf_data['server'], DB_conf_data['username'], DB_conf_data['password'], DB_conf_data['database']).cursor())
-        threading.Thread(target=scraper, args=(cursors[i], target_page_url[i])).start()
+        
+    # creating objects
+    thread_objects = []
+    for i in range(0, len(cursors)):
+        thread_objects.append(Thread4Scrap(i+1, "Thread - %d" % (i+1), cursors[i], target_page_urls[i]))
     
+    # running threads
+    for thread in thread_objects:
+        thread.start()
+        
