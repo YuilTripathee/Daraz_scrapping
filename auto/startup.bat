@@ -1,1 +1,1 @@
-start ./reminder/reminder.exe
+python ../scrapper.py
