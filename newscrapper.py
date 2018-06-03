@@ -1,3 +1,26 @@
+'''
+    Reporting solution to a bug:
+    Bug type            : Problem in sorting date string
+    Possible solution   : Change data type where timestamp is implemented into TIMESTAMP
+    Algorithm:
+        [done] 1. Change all string based data format to database's TIMESTAMP format
+        [done] 2. Update the queries in scraper program:
+                a. Optimise all insert query where timestamp has to be implemented
+                b. Make solution requiring update query in timestamp
+        [TBD ] 3. Perform merge operation for the products and prices
+                -->  you can either sort the price data by using either their primary key
+                    (i.e. id) or the data can be sorted by date.
+                --> sorting data by primary key is more sensible
+        [TBD ] 4. Optimise API section with merged products and prices.
+
+    Note    : Database system is hereby found beneficial to our project for its atomicity,
+              consistency, reliability and durability of the data bounded into the database
+              system. Moreover, it's possible cons would be that if project is highly 
+              depended to the database systems, optimal state of database should be 
+              maintained in real time execution of the project. This issue is depreciated as
+              back-end services rely on servers on which problem of closing database system
+              may only happen in worst scenarios.
+'''
 import pymysql
 import requests 
 import urllib
@@ -60,9 +83,8 @@ def scraper(database_connection, url_to_scrape):
             product_discount = product_content[1].find_all("span")[0].text # discount
             price_content = product_content[1].find_all("span")[1]
             product_price = int(price_content.span.find_all("span")[1]['data-price']) # price
-            product_date = time.asctime()
-            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s','%s','%s')" % (primary_key_inDB, product_price, product_discount, product_date, 'NPR')
-            update_product_date_Q = "UPDATE products SET date_updated = '%s' WHERE id = '%d'" % (product_date, primary_key_inDB)
+            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, currency_iso)VALUES('%d','%d','%s',' %s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
+            update_product_date_Q = "UPDATE products SET date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (primary_key_inDB) # aka foreign key
             try:
                 database_cursor.execute(insert_price_Q)
                 database_cursor.execute(update_product_date_Q)
@@ -92,12 +114,11 @@ def scraper(database_connection, url_to_scrape):
                     cat_id = 5
                 else:
                     cat_id = 0
-                product_date = time.asctime()
-                insert_product_Q = "INSERT INTO products(sku, product_name, category, link, image_link, date_issued, date_updated)VALUES('%s', '%s', '%d', '%s', '%s', '%s', '%s')" % (product_sku, product_name.strip().replace('\u2013',''), cat_id, product_link, product_image_link, product_date, product_date)
+                insert_product_Q = "INSERT INTO products(sku, product_name, category, link, image_link)VALUES('%s', '%s', '%d', '%s', '%s')" % (product_sku, product_name.strip().replace('\u2013',''), cat_id, product_link, product_image_link)
                 try:
                     database_cursor.execute(insert_product_Q)
                     foreign_key = search_product_in_DB(database_cursor, product_sku) # foreign key to link price with product
-                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s','%s','%s')" % (foreign_key, product_price, product_discount, product_date, 'NPR'))
+                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, currency_iso)VALUES('%d','%d','%s', '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
                     db.commit()
                 except:
                     db.rollback()
