@@ -25,5 +25,4 @@ import pickle   # pickle module to support python serializable format (aka Pickl
 
 # Output format
 The script returns a JSON (JavaScript Object Notation) format that is used universally. This file can be opened from anywhere you want using APIs.
-![Output Screenshot](docs/scr1.png)
 ![Output Screenshot](docs/scr2.png)
