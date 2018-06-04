@@ -1,4 +1,2 @@
- # research and development modules
-other/
-# Mail information
+# Mail information (login information and other database configurations)
 config/mailconfig.json 
