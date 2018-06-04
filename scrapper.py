@@ -73,8 +73,8 @@ def scraper(database_connection, url_to_scrape):
     product_category = product_cat.text # category
     product_group = main_soup.find_all('div', {'class' : ['sku', '-gallery']})
     print('Thread Starting')
+    # iteration over each product
     for item in product_group:
-    
         product_sku = item['data-sku']
         # Now search for the product in database relation
         primary_key_inDB = search_product_in_DB(database_cursor, product_sku) # acts as foreign key of price -> product
@@ -92,7 +92,7 @@ def scraper(database_connection, url_to_scrape):
                 print("[%s] Updated existing product" % primary_key_inDB)
             except:
                 db.rollback()
-            pass
+        # as the product is new (not in database), let's make a new entry for product and prices
         else:
             if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
                 product_content = item.a.find_all("div") # contents within the product card
@@ -125,6 +125,7 @@ def scraper(database_connection, url_to_scrape):
                 print("[%s] Added new product and price" % product_sku)
     database_cursor.close()
             
+# single object that acts as single thread to acheive multithreading            
 class Thread4Scrap (threading.Thread):
    def __init__(self, threadID, name, db_connection, url_to_scrape):
         threading.Thread.__init__(self)
@@ -145,25 +146,18 @@ if __name__ == '__main__':
         fp.close()
 
     # connect to database and set cursor to execute query
-
     db = pymysql.connect(DB_conf_data['server'], DB_conf_data['username'], DB_conf_data['password'], DB_conf_data['database'])
     cursor = db.cursor()
 
     # get urls to scrape
     target_page_urls = get_target_page_urls(cursor)
-    
-    '''
-        create threads to scrap each page
-        and peform concurrently
-        (Check architecture if necessary)
-    '''
  
     connections = []
-    # creating array of cursors
+    # creating list of connections
     for i in range(0, len(target_page_urls)):
         connections.append(pymysql.connect(DB_conf_data['server'], DB_conf_data['username'], DB_conf_data['password'], DB_conf_data['database']))
         
-    # creating objects
+    # creating objects (aka thread)
     thread_objects = []
     for i in range(0, len(target_page_urls)):
         thread_objects.append(Thread4Scrap(i+1, "Thread - %d" % (i+1), connections[i], target_page_urls[i]))
@@ -172,4 +166,5 @@ if __name__ == '__main__':
     for thread in thread_objects:
         thread.start()
     
+    # emitting success messages as the program run sucessfully
     print('Program executed sucessfully')
