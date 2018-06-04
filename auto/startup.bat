@@ -1,1 +1,1 @@
-python ../scrapper.py
+python ../newscrapper.py

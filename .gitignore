@@ -1,6 +1,4 @@
  # research and development modules
-temp/
-# Raw database
-database/ 
+other/
 # Mail information
 config/mailconfig.json 
