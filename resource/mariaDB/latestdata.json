@@ -1,0 +1,886 @@
+[
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:29 2018",
+        "date_updated": "Sun Jun  3 12:35:47 2018",
+        "id": 15,
+        "image_link": "https://np.daraz.io/di2I0SVsVIpUvclbcr1cBqqhvuU=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/58/722/1.jpg?7454",
+        "link": "https://www.daraz.com.np/other-black-otg-cable-for-mobile-phones-22785.html",
+        "name": "Black OTG Cable for Mobile Phones",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:29 2018",
+                "discount": "-66%",
+                "id": 15,
+                "price": 69
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:47 2018",
+                "discount": "-66%",
+                "id": 124,
+                "price": 69
+            }
+        ],
+        "sku": "OT776EL0YYM6ONAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:29 2018",
+        "date_updated": "Sun Jun  3 12:35:47 2018",
+        "id": 19,
+        "image_link": "https://np.daraz.io/0Vy0v_Pm1hvAmvTkWI3qKDOS6xE=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/60/529/1.jpg?8924",
+        "link": "https://www.daraz.com.np/other-hdmi-cable-1.5m-92506.html",
+        "name": "HDMI Cable (1.5m)",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:29 2018",
+                "discount": "-17%",
+                "id": 19,
+                "price": 125
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:47 2018",
+                "discount": "-17%",
+                "id": 125,
+                "price": 125
+            }
+        ],
+        "sku": "OT776EL101CH4NAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:29 2018",
+        "date_updated": "Sun Jun  3 12:35:48 2018",
+        "id": 23,
+        "image_link": "https://np.daraz.io/lWqItwPt6khdmAZPmHhfTJwlqog=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/45/6711/1.jpg?7825",
+        "link": "https://www.daraz.com.np/other-hdmi-to-hdmi-15-meter-cable-117654.html",
+        "name": "HDMI To HDMI 15 Meter Cable",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:29 2018",
+                "discount": "-45%",
+                "id": 23,
+                "price": 1049
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:47 2018",
+                "discount": "-45%",
+                "id": 126,
+                "price": 1049
+            }
+        ],
+        "sku": "OT776EL0R6W1ONAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:29 2018",
+        "date_updated": "Sun Jun  3 12:35:48 2018",
+        "id": 25,
+        "image_link": "https://np.daraz.io/Ro0sbdOVotlM-CegLl4c8oUMJDE=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/27/7021/1.jpg?8515",
+        "link": "https://www.daraz.com.np/onlineshopgroup-lightning-8-pin-to-hdmi-female-video-adapter-with-micro-usb-charging-cable-120772.html",
+        "name": "Lightning 8-Pin To HDMI Female Video Adapter With Micro USB Charging Cable",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:29 2018",
+                "discount": "-32%",
+                "id": 25,
+                "price": 1499
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:48 2018",
+                "discount": "-32%",
+                "id": 129,
+                "price": 1499
+            }
+        ],
+        "sku": "ON440EL0GHR2SNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:29 2018",
+        "date_updated": "Sun Jun  3 12:35:48 2018",
+        "id": 29,
+        "image_link": "https://np.daraz.io/YHyFj4q_wx94p2Jw0rNdEvGc27M=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/34/766/1.jpg?4424",
+        "link": "https://www.daraz.com.np/other-hdmi-to-vga-converter-66743.html",
+        "name": "HDMI To VGA Converter",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:29 2018",
+                "discount": "-64%",
+                "id": 29,
+                "price": 359
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:48 2018",
+                "discount": "-64%",
+                "id": 132,
+                "price": 359
+            }
+        ],
+        "sku": "OT776EL0KP5M8NAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:29 2018",
+        "date_updated": "Sun Jun  3 12:35:48 2018",
+        "id": 33,
+        "image_link": "https://np.daraz.io/sR3fzei7-yE39tiNOS2X9mGL0kI=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/55/6711/1.jpg?7825",
+        "link": "https://www.daraz.com.np/other-plastic-braided-hdmi-extension-cable-20m-117655.html",
+        "name": "Plastic Braided HDMI Extension Cable- 20M",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:29 2018",
+                "discount": "-43%",
+                "id": 33,
+                "price": 1149
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:48 2018",
+                "discount": "-43%",
+                "id": 135,
+                "price": 1149
+            }
+        ],
+        "sku": "OT776EL0X583GNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:29 2018",
+        "date_updated": "Sun Jun  3 12:35:48 2018",
+        "id": 37,
+        "image_link": "https://np.daraz.io/savGui9YU02dqfG4G24TqUAqmAE=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/11/4611/1.jpg?5541",
+        "link": "https://www.daraz.com.np/other-3-in-1-hdmi-switch-black-116411.html",
+        "name": "3 In 1 HDMI Switch- Black",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:29 2018",
+                "discount": "-34%",
+                "id": 37,
+                "price": 1649
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:48 2018",
+                "discount": "-34%",
+                "id": 137,
+                "price": 1649
+            }
+        ],
+        "sku": "OT776EL06TNFWNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:29 2018",
+        "date_updated": "Sun Jun  3 12:35:48 2018",
+        "id": 41,
+        "image_link": "https://np.daraz.io/YBOMtx9D-plMMuAk8FJRa19LfTU=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/51/2601/1.jpg?2188",
+        "link": "https://www.daraz.com.np/other-female-to-female-jumper-wire-10cm-20-pcs-106215.html",
+        "name": "Female To Female Jumper Wire 10cm - 20 Pcs",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:29 2018",
+                "discount": "-13%",
+                "id": 41,
+                "price": 100
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:48 2018",
+                "discount": "-13%",
+                "id": 141,
+                "price": 100
+            }
+        ],
+        "sku": "OT776EL0UIOJONAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:48 2018",
+        "id": 45,
+        "image_link": "https://np.daraz.io/vKiwtq6Hs4585g0aJpomGJ71xXk=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/09/383/1.jpg?5415",
+        "link": "https://www.daraz.com.np/other-yash-vision-mhl-to-hdmi-media-adapter-kit-6.5-feet-2m-universal-mhl-micro-usb-to-hdmi-cable-1080p-hdtv-adapter-38390.html",
+        "name": "Yash Vision Mhl To Hdmi Media Adapter Kit 6.5 Feet (2M) Universal Mhl Micro Usb To Hdmi Cable 1080P Hdtv Adapter",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:30 2018",
+                "discount": "-40%",
+                "id": 45,
+                "price": 899
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:48 2018",
+                "discount": "-40%",
+                "id": 142,
+                "price": 899
+            }
+        ],
+        "sku": "OT776EL05L3YWNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:49 2018",
+        "id": 47,
+        "image_link": "https://np.daraz.io/XrEuBGf2xEvdN3Q7mp9uEocPL_4=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/77/918/1.jpg?6965",
+        "link": "https://www.daraz.com.np/other-multi-function-usb-all-in-1-combo-hub-with-4-card-readers-3-usb-ports-81977.html",
+        "name": "Multi-function USB All-in-1 Combo Hub with 4 Card Readers & 3 USB Ports",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:30 2018",
+                "discount": "-50%",
+                "id": 47,
+                "price": 400
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:49 2018",
+                "discount": "-50%",
+                "id": 146,
+                "price": 400
+            }
+        ],
+        "sku": "OT776EL1AE1WWNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:49 2018",
+        "id": 51,
+        "image_link": "https://np.daraz.io/B2affbrLTjzD3pPinIRhQ7Gfldc=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/17/3211/1.jpg?5542",
+        "link": "https://www.daraz.com.np/other-dvi-male-to-vga-female-adapter-converter-112371.html",
+        "name": "DVI Male To VGA Female Adapter Converter",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:30 2018",
+                "discount": "-27%",
+                "id": 51,
+                "price": 800
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:49 2018",
+                "discount": "-27%",
+                "id": 148,
+                "price": 800
+            }
+        ],
+        "sku": "OT776EL0AB91ONAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:49 2018",
+        "id": 56,
+        "image_link": "https://np.daraz.io/24mjLvgkltCBxxOi6aGUjxdxS-U=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/39/209/1.jpg?7165",
+        "link": "https://www.daraz.com.np/other-vga-connector-15-vga-svga-kvm-female-to-female-gender-changer-adapter-90293.html",
+        "name": "VGA Connector, 15 VGA SVGA KVM Female to Female Gender Changer Adapter",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:30 2018",
+                "discount": "-60%",
+                "id": 57,
+                "price": 199
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:49 2018",
+                "discount": "-60%",
+                "id": 152,
+                "price": 199
+            }
+        ],
+        "sku": "OT776EL0NCDUWNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:49 2018",
+        "id": 61,
+        "image_link": "https://np.daraz.io/n0Iu4NJtlvlltMqRkxYpx938ceI=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/65/334/1.jpg?6648",
+        "link": "https://www.daraz.com.np/other-eastvita-5ft-1.5m-hdmi-to-3-rca-video-audio-av-component-converter-adapter-cable-for-hdtv-dvd-43356.html",
+        "name": "EastVita 5Ft 1.5m HDMI To 3-RCA Video Audio AV Component Converter Adapter Cable For HDTV DVD",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:30 2018",
+                "discount": "-55%",
+                "id": 60,
+                "price": 899
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:49 2018",
+                "discount": "-55%",
+                "id": 154,
+                "price": 899
+            }
+        ],
+        "sku": "AA370EL12WC1CNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:49 2018",
+        "id": 65,
+        "image_link": "https://np.daraz.io/bYt1c2ztynT9VDln8nTrm6D55H4=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/12/2601/1.jpg?2188",
+        "link": "https://www.daraz.com.np/other-male-to-female-jumper-wire-10cm-20-pcs-106221.html",
+        "name": "Male To Female Jumper Wire 10cm - 20 Pcs",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:30 2018",
+                "discount": "-13%",
+                "id": 66,
+                "price": 100
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:49 2018",
+                "discount": "-13%",
+                "id": 158,
+                "price": 100
+            }
+        ],
+        "sku": "OT776EL07ARYCNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:49 2018",
+        "id": 68,
+        "image_link": "https://np.daraz.io/FWqESj4gxE2GrEOIfnl7zrxS7Gc=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/49/2401/1.jpg?8338",
+        "link": "https://www.daraz.com.np/other-usb-type-c-to-hdmi-adapter-104294.html",
+        "name": "USB Type C To HDMI Adapter",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:30 2018",
+                "discount": "-20%",
+                "id": 68,
+                "price": 3999
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:49 2018",
+                "discount": "-20%",
+                "id": 163,
+                "price": 3999
+            }
+        ],
+        "sku": "OT776EL0TBDWKNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:49 2018",
+        "id": 73,
+        "image_link": "https://np.daraz.io/QyWBkUIJr3D914Cafktnfm7CVj0=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/61/2601/1.jpg?2188",
+        "link": "https://www.daraz.com.np/other-male-to-male-jumper-wire-10cm-20-pcs-106216.html",
+        "name": "Male To Male Jumper Wire 10cm - 20 Pcs",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:30 2018",
+                "discount": "-13%",
+                "id": 72,
+                "price": 100
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:49 2018",
+                "discount": "-13%",
+                "id": 166,
+                "price": 100
+            }
+        ],
+        "sku": "OT776EL10H0LGNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:30 2018",
+        "date_updated": "Sun Jun  3 12:35:49 2018",
+        "id": 76,
+        "image_link": "https://np.daraz.io/EMm7r6lt0A2u3iiaho8I2dVYAh0=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/17/0201/1.jpg?1560",
+        "link": "https://www.daraz.com.np/other-2-in-1-lightning-adapter-headphone-for-iphone-x-8877-plus-102071.html",
+        "name": "2 in 1 Lightning Adapter Headphone For iPhone X 8/8/7/7 Plus",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:31 2018",
+                "discount": "-43%",
+                "id": 76,
+                "price": 849
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:49 2018",
+                "discount": "-43%",
+                "id": 168,
+                "price": 849
+            }
+        ],
+        "sku": "AA370EL0A4SSKNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:31 2018",
+        "date_updated": "Sun Jun  3 12:35:50 2018",
+        "id": 81,
+        "image_link": "https://np.daraz.io/_PFYIRZHA5RufodCjmFUFHhMqZg=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/78/2401/1.jpg?7618",
+        "link": "https://www.daraz.com.np/other-usb-c-to-micro-usb-adapter-convert-connector-104287.html",
+        "name": "USB C To Micro USB Adapter Convert Connector",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:31 2018",
+                "discount": "-50%",
+                "id": 81,
+                "price": 149
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:50 2018",
+                "discount": "-50%",
+                "id": 172,
+                "price": 149
+            }
+        ],
+        "sku": "OT776EL1AKYG4NAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:31 2018",
+        "date_updated": "Sun Jun  3 12:35:50 2018",
+        "id": 84,
+        "image_link": "https://np.daraz.io/S_NXvl6kCuw-mMB656dAfKNvJZE=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/55/3211/1.jpg?2447",
+        "link": "https://www.daraz.com.np/other-1080p-hdmi-male-to-vga-female-adapter-converter-cable-for-pchdtvlaptop-112355.html",
+        "name": "1080P HDMI Male To VGA Female Adapter Converter Cable For PC/HDTV/Laptop",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:31 2018",
+                "discount": "-40%",
+                "id": 84,
+                "price": 600
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:50 2018",
+                "discount": "-40%",
+                "id": 176,
+                "price": 600
+            }
+        ],
+        "sku": "OT776EL0WXQ18NAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:31 2018",
+        "date_updated": "Sun Jun  3 12:35:50 2018",
+        "id": 89,
+        "image_link": "https://np.daraz.io/8AtB-xDImJ3Tdncd2zpFV6lTmlg=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/46/029/1.jpg?5704",
+        "link": "https://www.daraz.com.np/soft-vision-10-meter-long-hdmi-to-hdmi-cable-92064.html",
+        "name": "Soft Vision 10 Meter Long HDMI To HDMI Cable",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:31 2018",
+                "discount": "-25%",
+                "id": 88,
+                "price": 750
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:50 2018",
+                "discount": "-25%",
+                "id": 181,
+                "price": 750
+            }
+        ],
+        "sku": "SO445EL0REK7CNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:31 2018",
+        "date_updated": "Sun Jun  3 12:35:50 2018",
+        "id": 93,
+        "image_link": "https://np.daraz.io/bPWvrY9Cga3xWyCMhInpvLkQrV4=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/42/2601/1.jpg?2188",
+        "link": "https://www.daraz.com.np/other-female-to-female-jumper-wire-20cm-20-pcs-106224.html",
+        "name": "Female To Female Jumper Wire 20cm - 20 Pcs",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:31 2018",
+                "discount": "-14%",
+                "id": 93,
+                "price": 120
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:50 2018",
+                "discount": "-14%",
+                "id": 186,
+                "price": 120
+            }
+        ],
+        "sku": "OT776EL0P5S3ONAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:31 2018",
+        "date_updated": "Sun Jun  3 12:35:50 2018",
+        "id": 96,
+        "image_link": "https://np.daraz.io/NmHWkDt2iOmkyv8Oe3EUSApAUlo=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/37/109/1.jpg?8006",
+        "link": "https://www.daraz.com.np/other-usb-2.0-a-female-to-a-female-coupler-adapter-for-usb-cable-90173.html",
+        "name": "USB 2.0 A Female to A Female Coupler Adapter For USB Cable",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:31 2018",
+                "discount": "-34%",
+                "id": 96,
+                "price": 99
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:50 2018",
+                "discount": "-34%",
+                "id": 190,
+                "price": 99
+            }
+        ],
+        "sku": "OT776EL0M3DHKNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:31 2018",
+        "date_updated": "Sun Jun  3 12:35:51 2018",
+        "id": 101,
+        "image_link": "https://np.daraz.io/mMqvvHbHEfvy-D1znhCm-7FrxW8=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/32/2601/1.jpg?2188",
+        "link": "https://www.daraz.com.np/other-male-to-male-jumper-wire-20cm-20-pcs-106223.html",
+        "name": "Male To Male Jumper Wire 20cm - 20 Pcs",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:31 2018",
+                "discount": "-14%",
+                "id": 101,
+                "price": 120
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:51 2018",
+                "discount": "-14%",
+                "id": 196,
+                "price": 120
+            }
+        ],
+        "sku": "OT776EL0J7G1WNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:31 2018",
+        "date_updated": "Sun Jun  3 12:35:51 2018",
+        "id": 103,
+        "image_link": "https://np.daraz.io/nj1WC_NJ3OoDPGiYrSOXKRD1T9M=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/58/1101/1.jpg?0042",
+        "link": "https://www.daraz.com.np/other-usb-c-to-micro-usb-adapter-convert-connector-101185.html",
+        "name": "USB C To Micro USB Adapter Convert Connector",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:31 2018",
+                "discount": "-50%",
+                "id": 103,
+                "price": 149
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:51 2018",
+                "discount": "-50%",
+                "id": 199,
+                "price": 149
+            }
+        ],
+        "sku": "AA370EL0YLI1GNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:51 2018",
+        "id": 108,
+        "image_link": "https://np.daraz.io/NsGiPsWa7ygxlJB_ttcOHUkbwZA=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/59/4301/1.jpg?5538",
+        "link": "https://www.daraz.com.np/other-apple-macbook-pro-type-c-hub-adapter-7-in-1-with-hdmi-103495.html",
+        "name": "Apple Macbook Pro Type-C Hub Adapter 7 in 1 With HDMI",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-16%",
+                "id": 108,
+                "price": 4199
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:51 2018",
+                "discount": "-16%",
+                "id": 204,
+                "price": 4199
+            }
+        ],
+        "sku": "OT776EL0ZDSK4NAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:51 2018",
+        "id": 110,
+        "image_link": "https://np.daraz.io/a5uzgsRy6G7CAWuRcCFTC9AkFBM=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/30/659/1.jpg?1285",
+        "link": "https://www.daraz.com.np/other-usb-2.0-type-a-male-to-a-female-extension-cable-3-meter-black-95603.html",
+        "name": "USB 2.0 Type A Male to A Female Extension Cable 3 Meter - Black",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-25%",
+                "id": 110,
+                "price": 149
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:51 2018",
+                "discount": "-25%",
+                "id": 209,
+                "price": 149
+            }
+        ],
+        "sku": "OT776EL0I94MWNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:52 2018",
+        "id": 112,
+        "image_link": "https://np.daraz.io/L2dMbzG-MyO0irpgXD8j_X7buEo=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/37/3211/1.jpg?6262",
+        "link": "https://www.daraz.com.np/other-gold-plated-mini-dp-to-dvi-vga-hdmi-3-in-1-cable-112373.html",
+        "name": "Gold Plated Mini DP To DVI VGA HDMI  3 In 1 Cable",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-33%",
+                "id": 112,
+                "price": 999
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:51 2018",
+                "discount": "-33%",
+                "id": 212,
+                "price": 999
+            }
+        ],
+        "sku": "OT776EL0M7X58NAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:52 2018",
+        "id": 114,
+        "image_link": "https://np.daraz.io/2__dMvVpQqUX1XxnJwvenOOGjQ4=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/68/648/1.jpg?9845",
+        "link": "https://www.daraz.com.np/kpitsolution-type-c-male-to-micro-usb-female-converter-syncing-charging-84686.html",
+        "name": "Type-C Male to Micro USB Female Converter Syncing Charging",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-52%",
+                "id": 114,
+                "price": 119
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:52 2018",
+                "discount": "-52%",
+                "id": 215,
+                "price": 119
+            }
+        ],
+        "sku": "KP432EL14VD4WNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:52 2018",
+        "id": 116,
+        "image_link": "https://np.daraz.io/FWG2iD0HRcqyP9ncFAOaX2cVyM0=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/96/038/1.jpg?1026",
+        "link": "https://www.daraz.com.np/other-3.5mm-audio-cable-male-to-2-female-aux-cable-stereo-jack-splitter-cable-adapter-83069.html",
+        "name": "3.5mm Audio Cable Male to 2 Female Aux Cable Stereo Jack Splitter Cable Adapter",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-60%",
+                "id": 117,
+                "price": 399
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:52 2018",
+                "discount": "-60%",
+                "id": 219,
+                "price": 399
+            }
+        ],
+        "sku": "AA370EL1L6FE8NAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:52 2018",
+        "id": 119,
+        "image_link": "https://np.daraz.io/2AH5oGzwgsdll8LfOMBB5siacHI=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/10/001/1.jpg?5553",
+        "link": "https://www.daraz.com.np/other-hdmi-male-to-vga-audio-converter-cable-for-pclaptop-10001.html",
+        "name": "HDMI Male to VGA + Audio Converter Cable For PC/Laptop",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-50%",
+                "id": 119,
+                "price": 499
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:52 2018",
+                "discount": "-50%",
+                "id": 222,
+                "price": 499
+            }
+        ],
+        "sku": "OT776OT05YCTKNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:53 2018",
+        "id": 120,
+        "image_link": "https://np.daraz.io/4DwA7OWc7ANltnWMPXh3L6OPXdg=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/59/431/1.jpg?5836",
+        "link": "https://www.daraz.com.np/other-1080p-hdtv-hdmi-male-to-3-rca-audio-video-av-cable-cord-adapter-13495.html",
+        "name": "1080P HDTV HDMI Male To 3 RCA Audio Video AV Cable Cord Adapter",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-8%",
+                "id": 120,
+                "price": 1099
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:52 2018",
+                "discount": "-8%",
+                "id": 225,
+                "price": 1099
+            }
+        ],
+        "sku": "OT776EL0ZDT94NAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:53 2018",
+        "id": 121,
+        "image_link": "https://np.daraz.io/qATzcLa_TSTUQEoA8Fw2-3z2-98=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/81/29/1.jpg?2773",
+        "link": "https://www.daraz.com.np/other-5-meter-long-hdmi-to-hdmi-cable-9218.html",
+        "name": "5 Meter Long HDMI To HDMI Cable",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-53%",
+                "id": 121,
+                "price": 349
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:53 2018",
+                "discount": "-53%",
+                "id": 228,
+                "price": 349
+            }
+        ],
+        "sku": "OT776OT1CEBRKNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:53 2018",
+        "id": 122,
+        "image_link": "https://np.daraz.io/xiEiWQ2TIi49_9csF_2suZYWPqw=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/54/001/1.jpg?1087",
+        "link": "https://www.daraz.com.np/other-hdmi-hdmi-10-meter-cable-10045.html",
+        "name": "HDMI-HDMI 10 Meter Cable",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-8%",
+                "id": 122,
+                "price": 599
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:53 2018",
+                "discount": "-8%",
+                "id": 231,
+                "price": 599
+            }
+        ],
+        "sku": "OT776OT0W5FFSNAFAMZ"
+    },
+    {
+        "category": 1,
+        "date_issued": "Sun Jun  3 12:28:32 2018",
+        "date_updated": "Sun Jun  3 12:35:53 2018",
+        "id": 123,
+        "image_link": "https://np.daraz.io/bYSlk30zlFZiaZqeqd6ME7-JOmU=/fit-in/220x220/filters:fill(white):sharpen(1,0,false):quality(80)/product/55/829/1.jpg?0885",
+        "link": "https://www.daraz.com.np/other-4ft-usb-2.0-a-type-male-to-dc-5.5-x-2.1mm-dc-5v-power-plug-connector-cable-92855.html",
+        "name": "4ft USB 2.0 A Type Male to DC 5.5 x 2.1mm DC 5V Power Plug Connector Cable",
+        "prices": [
+            {
+                "currency": "NPR",
+                "date": "Sun Jun  3 12:28:32 2018",
+                "discount": "-44%",
+                "id": 123,
+                "price": 280
+            },
+            {
+                "currency": " NP",
+                "date": "Sun Jun  3 12:35:53 2018",
+                "discount": "-44%",
+                "id": 234,
+                "price": 280
+            }
+        ],
+        "sku": "OT776EL0X8LXKNAFAMZ"
+    }
+]
