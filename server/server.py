@@ -6,10 +6,12 @@ from flask import Flask, jsonify, request   # import objects from the Flask mode
 app = Flask(__name__) # define app using flask
 portname = 8090
 
+# acquiring database configuration for connection to the database and query execution
 with open('../config/DBconf.json', 'r+', encoding='utf-8') as fp:
     DB_data = json.load(fp)
     fp.close()
 
+# returns prices of the product iterable provided
 def get_prices(database_cursor, foreign_key_in_price):
     get_prices_Q = "SELECT * FROM prices WHERE prod_id = '%d' ORDER BY id ASC" % foreign_key_in_price
     try:
@@ -29,6 +31,7 @@ def get_prices(database_cursor, foreign_key_in_price):
     except:
         raise
 
+# build a JSON like list of products dictionaries according to parameters provided
 def build_product_list(cursor, product_results):
     array_of_products = []
     for data in product_results:
@@ -46,6 +49,8 @@ def build_product_list(cursor, product_results):
         array_of_products.append(product_unit)
     return array_of_products
 
+# returns the products with prices based on the arguments provided
+# fetches data from database through SQL query and acquire JSON like data from build_products()
 def get_products(cursor, category=None, sku=None):
     if category != None:
         get_product_by_cat_Q = "SELECT * FROM products WHERE category = '%d';" % category
