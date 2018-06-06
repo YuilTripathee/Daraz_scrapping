@@ -84,7 +84,7 @@ def get_products(cursor, category=None, sku=None):
             raise
 
 # simple API response test   
-@app.route('/', methods=['GET'])
+@app.route('/api/', methods=['GET'])
 def test():
     data = {
         'data' : {
@@ -96,14 +96,14 @@ def test():
     return jsonify(data)
 
 # products
-@app.route('/products/', methods=['GET'])
+@app.route('/api/products/', methods=['GET'])
 def product_print():
     connection = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database'])
     cursor = connection.cursor()
     return jsonify({ "products" : get_products(cursor)})
 
 # category of products
-@app.route('/products/category/', methods=['GET'])
+@app.route('/api/products/category/', methods=['GET'])
 def send_category():
     args = request.args
     category = args['category']
@@ -113,7 +113,7 @@ def send_category():
     return jsonify({ "category" : products_el_category})
 
 # individual product
-@app.route('/product/', methods=['GET'])
+@app.route('/api/product/', methods=['GET'])
 def send_product():
     args = request.args
     sku_data = args['sku']
