@@ -2,32 +2,18 @@
 
 ## Project Structure Summary
 The project basically scraps the contents from web and gives the client products having reasonable pricing. We have the following scripts:
-1.  `main.py` : scrapping script 
-2.  `writeJSON.py` : script to detect changes in prices of product.
-3.  `writeHTML.py` : script to generate HTML5 page for rendering products having price drop.  
-4.  `sendmail.py` : email client scipt send email for notifying products having price drop.
-5.  `sendToDB.py` : script to send the data in database.
-6.  `iDB.py` : interactive console to execute SQL queries to the connected database server.
-7.  `getch.py` : hold the console to notify for the task to be automated.
-
-## Local JSON data structure summary
-The data structure in local database (working during runtime):
-1. `config.json` : configuration file for scrapping contents.
-2. `dataset.json` : mail local database (all the scraped data written into JSON).
-3. `DBconf.json` : configuration file for database (host, port, authentication credentials)
-4. `mailsubscrib.json` : list of notification subscribers.
-5. `serializable.p` : serializable format (pickle) data from `dataset.json`.
+1.  `scrapper.py` : scrapping script 
 
 ## Host and port
 ```python
-host_port = 'http://localhost://8080/'
+host_port = 'http://localhost://8090/'
 ```
 
 ## Accessing API
  Operation | Procedure (REST API link) 
 | --------- | ----------|
 | To access all products | `host_port/products/` |
-| To access products under a paricular category | `host_port/products/category/?category='category` Here, category are of following types: `Cables`, `Wireless Speakers`, `Computing & Gaming`, `Smartwatches`, `VR Headsets`, etc. 
+| To access products under a paricular category | `host_port/products/category/?category='category` Here, category are of category id in integer` i.e. 1, 2, 3... 
 | To access individual product | `host_port/product/?sku='sku content'` |
 
 ## Output format
