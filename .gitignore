@@ -1,3 +1,4 @@
 # Mail information (login information and other database configurations)
 config/mailconfig.json 
 .vscode/
+.DS_store
