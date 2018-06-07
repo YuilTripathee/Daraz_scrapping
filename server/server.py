@@ -2,6 +2,9 @@ import json
 import pymysql
 import datetime
 from flask import Flask, jsonify, request   # import objects from the Flask model
+# importing cache object
+from werkzeug.contrib.cache import SimpleCache
+cache = SimpleCache()
 
 app = Flask(__name__) # define app using flask
 portname = 8090
@@ -95,25 +98,32 @@ def test():
     }
     return jsonify(data)
 
-# list of all the products
-list_all_products = get_products(pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor())
+# cache section
+def get_all_products():
+    rv = cache.get('my-cache')
+    if rv is None:
+        rv = get_products(pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor())
+        cache.set('my-cache', rv, timeout=300)
+    return rv
+
+def get_products_by_category(category_id):
+    rc = cache.get('cat-cache : %d' % category_id)
+    if rc is None:
+        rc = get_products(pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor(), category=category_id)
+        cache.set('cat-cache : %d' % category_id, rc, timeout=300)
+    return rc
+
 # products
 @app.route('/api/products/', methods=['GET'])
 def product_print():
-    # connection = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database'])
-    # cursor = connection.cursor()
-    # return jsonify({ "products" : get_products(cursor)})
-    return jsonify({ "products" : list_all_products })
+    return jsonify({ "products" : get_all_products() })
 
 # category of products
 @app.route('/api/products/category/', methods=['GET'])
 def send_category():
     args = request.args
     category = args['category']
-    connection = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database'])
-    cursor = connection.cursor()
-    products_el_category = get_products(cursor, category=int(category))
-    return jsonify({ "category" : products_el_category})
+    return jsonify({ "category" : get_products_by_category(category)})
 
 # individual product
 @app.route('/api/product/', methods=['GET'])
@@ -124,6 +134,22 @@ def send_product():
     cursor = connection.cursor()
     return jsonify({"product" : get_products(cursor, sku=sku_data)})
 
+# returns the number of categories in our database
+def get_category_IDs():
+    get_category_data_Q = "SELECT * FROM category;"
+    cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
+    cursor.execute(get_category_data_Q)
+    cat_data_raw = cursor.fetchall()
+    list_category_id = []
+    for unit in cat_data_raw:
+        list_category_id.append(unit[0])
+    return list_category_id
+
 # running flask app
 if __name__ == '__main__':
+    #initiating cache
+    get_all_products()
+    for category_id in get_category_IDs():
+        get_products_by_category(category_id)
+    # starting server
     app.run(port=portname, threaded=True)
