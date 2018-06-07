@@ -95,12 +95,15 @@ def test():
     }
     return jsonify(data)
 
+# list of all the products
+list_all_products = get_products(pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor())
 # products
 @app.route('/api/products/', methods=['GET'])
 def product_print():
-    connection = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database'])
-    cursor = connection.cursor()
-    return jsonify({ "products" : get_products(cursor)})
+    # connection = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database'])
+    # cursor = connection.cursor()
+    # return jsonify({ "products" : get_products(cursor)})
+    return jsonify({ "products" : list_all_products })
 
 # category of products
 @app.route('/api/products/category/', methods=['GET'])
@@ -123,4 +126,4 @@ def send_product():
 
 # running flask app
 if __name__ == '__main__':
-    app.run(debug=True, port=portname)
+    app.run(port=portname, threaded=True)
