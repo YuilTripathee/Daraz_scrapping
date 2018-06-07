@@ -47,6 +47,18 @@ Here, the row format is explained in the table:
 | varname | Value of named variable |
 
 # How to run JMeter in non-GUI mode
+## setup path variable
+** Here is the sample method setting jmeter/bin into path: **
+```s
+    computer:bin user$ jmeter
+    -bash: jmeter: command not found
+    computer:bin user$ pwd
+    /Users/user/Downloads/apache-jmeter-2.13/bin
+    computer:bin user$ export PATH=$PATH:/Users/user/Downloads/apache-jmeter-2.13/bin
+    computer:bin user$ jmeter
+    org.apache.jmeter.testelement.TestPlan
+    org.apache.jmeter.control.gui.TestPlanGui
+```
 Running Apache JMeter in non-GUI or non-console mode is the primary way to perform performance test on a system. For this, we have to write `something.jmx` file using GUI JMeter. It is cross platform application, you can use it anywhere. 
 
 Below is the example of simple command which can be run to do a JMeter test:
