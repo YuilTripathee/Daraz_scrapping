@@ -1,3 +1,4 @@
+import sys
 import json
 import pymysql
 import datetime
@@ -7,7 +8,6 @@ from werkzeug.contrib.cache import SimpleCache
 cache = SimpleCache()
 
 app = Flask(__name__) # define app using flask
-portname = 8090
 
 # acquiring database configuration for connection to the database and query execution
 with open('../config/DBconf.json', 'r+', encoding='utf-8') as fp:
@@ -56,7 +56,7 @@ def build_product_list(cursor, product_results):
 # fetches data from database through SQL query and acquire JSON like data from build_products()
 def get_products(cursor, category=None, sku=None):
     if category != None:
-        get_product_by_cat_Q = "SELECT * FROM products WHERE category = '%d';" % category
+        get_product_by_cat_Q = "SELECT * FROM products WHERE category = '%d';" % int(category)
         try:
             cursor.execute(get_product_by_cat_Q)
             product_results = cursor.fetchall()
@@ -92,8 +92,7 @@ def test():
     data = {
         'data' : {
             'provider' : 'Yuil Tripathee',
-            'host' : '127.0.0.1',
-            'port' : portname
+            'host' : '127.0.0.1'
         }
     }
     return jsonify(data)
@@ -107,10 +106,17 @@ def get_all_products():
     return rv
 
 def get_products_by_category(category_id):
-    rc = cache.get('cat-cache : %d' % category_id)
+    rc = cache.get('cat-cache : %d' % int(category_id))
     if rc is None:
         rc = get_products(pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor(), category=category_id)
-        cache.set('cat-cache : %d' % category_id, rc, timeout=300)
+        cache.set('cat-cache : %d' % int(category_id), rc, timeout=300)
+    return rc
+
+def sku(sku_data):
+    rc = cache.get('cat-cache : %s' % sku_data)
+    if rc is None:
+        rc = get_products(pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor(), category=category_id)
+        cache.set('cat-cache : %s' % sku_data, rc, timeout=300)
     return rc
 
 # products
@@ -151,5 +157,11 @@ if __name__ == '__main__':
     get_all_products()
     for category_id in get_category_IDs():
         get_products_by_category(category_id)
+    # setting up port
+    try:
+        port = int(sys.argv[1])
+    except:
+        port = 5000
+
     # starting server
-    app.run(port=portname, threaded=True)
+    app.run(port=port, threaded=True)
