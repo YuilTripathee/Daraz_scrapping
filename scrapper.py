@@ -83,7 +83,7 @@ def scraper(database_connection, url_to_scrape):
             product_discount = product_content[1].find_all("span")[0].text # discount
             price_content = product_content[1].find_all("span")[1]
             product_price = int(price_content.span.find_all("span")[1]['data-price']) # price
-            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, currency_iso)VALUES('%d','%d','%s',' %s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
+            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP,'%s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
             update_product_date_Q = "UPDATE products SET date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (primary_key_inDB) # aka foreign key
             try:
                 database_cursor.execute(insert_price_Q)
@@ -118,7 +118,7 @@ def scraper(database_connection, url_to_scrape):
                 try:
                     database_cursor.execute(insert_product_Q)
                     foreign_key = search_product_in_DB(database_cursor, product_sku) # foreign key to link price with product
-                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, currency_iso)VALUES('%d','%d','%s', '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
+                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP, '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
                     db.commit()
                 except:
                     db.rollback()
