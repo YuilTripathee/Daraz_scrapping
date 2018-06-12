@@ -187,10 +187,11 @@ if __name__ == '__main__':
     ## start of initiation ##
     
     # scraping variable
-    with open('config/scrapsite.json', 'r+', encoding='utf-8') as fp:
-        file_content = json.load(fp)
-        urls_to_scrape = file_content["sites"]
-        fp.close()
+    # with open('config/scrapsite.json', 'r+', encoding='utf-8') as fp:
+    #     file_content = json.load(fp)
+    #     urls_to_scrape = file_content["sites"]
+    #     fp.close()
+    urls_to_scrape = ['https://www.daraz.com.np/cables/', 'https://www.daraz.com.np/mobiles-tablets-smartwatches', 'https://www.daraz.com.np/wireless-speakers/', 'https://www.daraz.com.np/vr-headsets/']
 
     # check it file is empty and initializes the structure of database
     with open('database/dataset.json', 'r+', encoding='utf-8') as fp:

@@ -63,7 +63,6 @@ def search_product_in_DB(database_cursor, sku_data):
 def scraper(database_connection, url_to_scrape):
     db = database_connection
     database_cursor = db.cursor()
-    print('Starting scrapper')
     r = requests.get(url_to_scrape)
     main_soup = soup(r.text, 'html.parser')
     # marking category
@@ -72,7 +71,6 @@ def scraper(database_connection, url_to_scrape):
         tag.replace_with('')
     product_category = product_cat.text # category
     product_group = main_soup.find_all('div', {'class' : ['sku', '-gallery']})
-    print('Thread Starting')
     # iteration over each product
     for item in product_group:
         product_sku = item['data-sku']
@@ -83,7 +81,7 @@ def scraper(database_connection, url_to_scrape):
             product_discount = product_content[1].find_all("span")[0].text # discount
             price_content = product_content[1].find_all("span")[1]
             product_price = int(price_content.span.find_all("span")[1]['data-price']) # price
-            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, currency_iso)VALUES('%d','%d','%s',' %s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
+            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP,'%s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
             update_product_date_Q = "UPDATE products SET date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (primary_key_inDB) # aka foreign key
             try:
                 database_cursor.execute(insert_price_Q)
@@ -118,7 +116,7 @@ def scraper(database_connection, url_to_scrape):
                 try:
                     database_cursor.execute(insert_product_Q)
                     foreign_key = search_product_in_DB(database_cursor, product_sku) # foreign key to link price with product
-                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, currency_iso)VALUES('%d','%d','%s', '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
+                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP, '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
                     db.commit()
                 except:
                     db.rollback()
@@ -166,5 +164,3 @@ if __name__ == '__main__':
     for thread in thread_objects:
         thread.start()
     
-    # emitting success messages as the program run sucessfully
-    print('Program executed sucessfully')
