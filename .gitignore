@@ -2,4 +2,6 @@
 config/mailconfig.json 
 .vscode/
 .DS_store
-test/
+test/results/
+test/jmeter.jtl
+test/jmeter.log
