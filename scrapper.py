@@ -63,7 +63,6 @@ def search_product_in_DB(database_cursor, sku_data):
 def scraper(database_connection, url_to_scrape):
     db = database_connection
     database_cursor = db.cursor()
-    print('Starting scrapper')
     r = requests.get(url_to_scrape)
     main_soup = soup(r.text, 'html.parser')
     # marking category
@@ -72,7 +71,6 @@ def scraper(database_connection, url_to_scrape):
         tag.replace_with('')
     product_category = product_cat.text # category
     product_group = main_soup.find_all('div', {'class' : ['sku', '-gallery']})
-    print('Thread Starting')
     # iteration over each product
     for item in product_group:
         product_sku = item['data-sku']
@@ -166,5 +164,3 @@ if __name__ == '__main__':
     for thread in thread_objects:
         thread.start()
     
-    # emitting success messages as the program run sucessfully
-    print('Program executed sucessfully')
