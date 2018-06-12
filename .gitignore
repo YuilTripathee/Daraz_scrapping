@@ -2,3 +2,4 @@
 config/mailconfig.json 
 .vscode/
 .DS_store
+test/
