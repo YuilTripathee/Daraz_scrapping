@@ -1,7 +1,3 @@
-# Mail information (login information and other database configurations)
-config/mailconfig.json 
 .vscode/
 .DS_store
-test/results/
-test/jmeter.jtl
-test/jmeter.log
+./test/
