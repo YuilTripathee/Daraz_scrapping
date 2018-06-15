@@ -1,26 +1,3 @@
-'''
-    Reporting solution to a bug:
-    Bug type            : Problem in sorting date string
-    Possible solution   : Change data type where timestamp is implemented into TIMESTAMP
-    Algorithm:
-        [done] 1. Change all string based data format to database's TIMESTAMP format
-        [done] 2. Update the queries in scraper program:
-                a. Optimise all insert query where timestamp has to be implemented
-                b. Make solution requiring update query in timestamp
-        [TBD ] 3. Perform merge operation for the products and prices
-                -->  you can either sort the price data by using either their primary key
-                    (i.e. id) or the data can be sorted by date.
-                --> sorting data by primary key is more sensible
-        [TBD ] 4. Optimise API section with merged products and prices.
-
-    Note    : Database system is hereby found beneficial to our project for its atomicity,
-              consistency, reliability and durability of the data bounded into the database
-              system. Moreover, it's possible cons would be that if project is highly 
-              depended to the database systems, optimal state of database should be 
-              maintained in real time execution of the project. This issue is depreciated as
-              back-end services rely on servers on which problem of closing database system
-              may only happen in worst scenarios.
-'''
 import pymysql
 import requests 
 import urllib
@@ -49,18 +26,8 @@ def get_target_page_urls(database_cursor):
         print("Unable to fetch data from database : URLS to scrape")
         return None   
 
-# get primary key if present in data just to update the price
-def search_product_in_DB(database_cursor, sku_data):
-    search_product_DB_Q = "SELECT * FROM products WHERE sku = '%s'" % sku_data
-    database_cursor.execute(search_product_DB_Q)
-    product_DB = database_cursor.fetchone()
-    if product_DB:
-        return product_DB[0]
-    else:
-        return None
-
 # scraper function that takes single url and scrap the contents
-def scraper(database_connection, url_to_scrape):
+def scraper_typeA(database_connection, url_to_scrape):
     db = database_connection
     database_cursor = db.cursor()
     r = requests.get(url_to_scrape)
@@ -81,20 +48,14 @@ def scraper(database_connection, url_to_scrape):
             product_discount = product_content[1].find_all("span")[0].text # discount
             price_content = product_content[1].find_all("span")[1]
             product_price = int(price_content.span.find_all("span")[1]['data-price']) # price
-            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP,'%s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
-            update_product_date_Q = "UPDATE products SET date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (primary_key_inDB) # aka foreign key
-            try:
-                database_cursor.execute(insert_price_Q)
-                database_cursor.execute(update_product_date_Q)
-                db.commit()
-                print("[%s] Updated existing product" % primary_key_inDB)
-            except:
-                db.rollback()
+            primary_key_inDB = put_price_inDB(database_cursor, product_sku, product_price, product_discount)
+            update_product_inDB(database_cursor, primary_key_inDB)
         # as the product is new (not in database), let's make a new entry for product and prices
         else:
             if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
                 product_content = item.a.find_all("div") # contents within the product card
-                product_discount = product_content[1].find_all("span")[0].text # discount
+                product_disc = product_content[1].find_all("span")[0].text.strip.replace('-','') # discount
+                product_discount = int(product_disc.strip.replace('&','')) # discount
                 price_content = product_content[1].find_all("span")[1]
                 product_price = int(price_content.span.find_all("span")[1]['data-price']) # price
                 product_name = item.a.h2.text.strip().replace('\u00a0','') # name
@@ -115,14 +76,49 @@ def scraper(database_connection, url_to_scrape):
                 insert_product_Q = "INSERT INTO products(sku, product_name, category, link, image_link)VALUES('%s', '%s', '%d', '%s', '%s')" % (product_sku, product_name.strip().replace('\u2013',''), cat_id, product_link, product_image_link)
                 try:
                     database_cursor.execute(insert_product_Q)
-                    foreign_key = search_product_in_DB(database_cursor, product_sku) # foreign key to link price with product
-                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP, '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
-                    db.commit()
+                    put_price_inDB(database_cursor, product_sku, product_price, product_discount)
                 except:
                     db.rollback()
                 print("[%s] Added new product and price" % product_sku)
     database_cursor.close()
-            
+
+# get primary key if present in data just to update the price
+def search_product_in_DB(database_cursor, sku_data):
+    search_product_DB_Q = "SELECT * FROM products WHERE sku = '%s'" % sku_data
+    database_cursor.execute(search_product_DB_Q)
+    product_DB = database_cursor.fetchone()
+    if product_DB:
+        return product_DB[0]
+    else:
+        return None
+# update the timestamp of product in the database
+def update_product_inDB(database_cursor, primary_key_inDB, index = None):
+    update_product_date_Q = "UPDATE products SET date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (primary_key_inDB) # aka foreign key
+    try:
+        database_cursor.execute(update_product_date_Q)
+        db.commit()
+        print("[%s] Updated existing product" % primary_key_inDB)
+    except:
+        db.rollback()
+
+# inserts an entry of products into the database
+def put_product_inDB(database_cursor, product_sku, product_name, category, product_link, product_image_link):
+    insert_product_Q = "INSERT INTO products(sku, product_name, category, link, image_link)VALUES('%s', '%s', '%d', '%s', '%s')" % (product_sku, product_name.strip().replace('\u2013',''), category, product_link, product_image_link)
+    try:
+        database_cursor.execute(insert_product_Q)
+    except:
+        db.rollback()
+
+# inserts an entry of price into the database
+def put_price_inDB(database_cursor, product_sku, product_price, product_discount):
+    try:
+        foreign_key = search_product_in_DB(database_cursor, product_sku) # foreign key to link price with product
+        database_cursor.execute("INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP, '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
+        db.commit()
+        return foreign_key
+    except:
+        db.rollback()
+           
 # single object that acts as single thread to acheive multithreading            
 class Thread4Scrap (threading.Thread):
    def __init__(self, threadID, name, db_connection, url_to_scrape):
@@ -134,7 +130,7 @@ class Thread4Scrap (threading.Thread):
       
    def run(self):
       print ("Starting " + self.name)
-      scraper(self.connection, self.page)
+      scraper_typeA(self.connection, self.page)
       print ("Exiting " + self.name)
 
 if __name__ == '__main__':
