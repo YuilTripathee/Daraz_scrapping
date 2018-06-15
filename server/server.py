@@ -15,22 +15,34 @@ with open('../config/DBconf.json', 'r+', encoding='utf-8') as fp:
     fp.close()
 
 # returns prices of the product iterable provided
-def get_prices(database_cursor, foreign_key_in_price):
+def get_prices(database_cursor, foreign_key_in_price, one_price = False):
     get_prices_Q = "SELECT * FROM prices WHERE prod_id = '%d' ORDER BY id ASC" % foreign_key_in_price
     try:
         database_cursor.execute(get_prices_Q)
-        price_result = database_cursor.fetchall()
+        # price_result = database_cursor.fetchall()
         price_list = []
-        for price in price_result:
+        if one_price == True:
+            price_result = database_cursor.fetchone()
             price_unit = {
-                'id' : price[0],
-                'price' : price[2],
-                'discount' : price[3],
-                'date' : price[4].strftime('%c'),
-                'currency' : price[5]
+                'id' : price_result[0],
+                'price' : price_result[2],
+                'discount' : price_result[3],
+                'date' : price_result[4].strftime('%c'),
+                'currency' : price_result[5]
             }
-            price_list.append(price_unit)
-        return price_list   
+            return price_unit
+        else:    
+            price_result = database_cursor.fetchall()
+            for price in price_result:
+                price_unit = {
+                    'id' : price[0],
+                    'price' : price[2],
+                    'discount' : price[3],
+                    'date' : price[4].strftime('%c'),
+                    'currency' : price[5]
+                }
+                price_list.append(price_unit)
+            return price_list   
     except:
         raise
 
@@ -47,7 +59,7 @@ def build_product_list(cursor, product_results):
             'image_link' : data[5],
             'date_issued' : data[6].strftime('%c'),
             'date_updated' : data[7].strftime('%c'),
-            'prices' : get_prices(cursor, data[0])
+            'prices' : get_prices(cursor, data[0], one_price=True)
         }
         array_of_products.append(product_unit)
     return array_of_products
@@ -121,7 +133,7 @@ def sku(sku_data):
 
 # products
 @app.route('/api/products/', methods=['GET'])
-def product_print():
+def print_products():
     return jsonify({ "products" : get_all_products() })
 
 # category of products
