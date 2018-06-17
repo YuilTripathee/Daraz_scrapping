@@ -1,9 +1,7 @@
 import sys
 import json
 import pymysql
-import datetime
-from flask import Flask, jsonify, request   # import objects from the Flask model
-# importing cache object
+from flask import Flask, jsonify, request, Response   # import objects from the Flask model
 from werkzeug.contrib.cache import SimpleCache
 cache = SimpleCache()
 
@@ -107,7 +105,9 @@ def test():
             'host' : '127.0.0.1'
         }
     }
-    return jsonify(data)
+    js = json.dumps(data)
+    response = Response(js, status=200, mimetype="application/json")
+    return response
 
 # cache section
 def get_all_products():
@@ -165,11 +165,13 @@ def get_category_IDs():
 
 # running flask app
 if __name__ == '__main__':
-    #initiating cache
+    
+    #initiating cache, large data would get hot access
     get_all_products()
     for category_id in get_category_IDs():
         get_products_by_category(category_id)
-    # setting up port
+
+    # setting up port with default port settings
     try:
         port = int(sys.argv[1])
     except:
