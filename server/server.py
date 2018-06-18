@@ -178,4 +178,4 @@ if __name__ == '__main__':
         port = 5000
 
     # starting server
-    app.run(port=port, threaded=True)
+    app.run(host = '0.0.0.0', port=port, threaded=True)
