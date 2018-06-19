@@ -95,9 +95,10 @@ def scraper(database_connection, url_to_scrape):
                     foreign_key = search_product_in_DB(database_cursor, product_sku) # foreign key to link price with product
                     database_cursor.execute("INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP, '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
                     db.commit()
+                    print("[%s] Added new product and price" % product_sku)
                 except:
                     db.rollback()
-                print("[%s] Added new product and price" % product_sku)
+                    print("[%s] Could not add this product" % product_sku)
     database_cursor.close()
             
 # single object that acts as single thread to acheive multithreading            
