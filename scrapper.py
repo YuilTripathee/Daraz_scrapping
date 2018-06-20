@@ -20,7 +20,7 @@ def get_target_page_urls(database_cursor):
         page_urls = cursor.fetchall()
         target_url = []
         for unit in page_urls:
-            target_url.append(unit[1])
+            target_url.append(unit[2])
         return target_url
     except:
         print("Unable to fetch data from database : URLS to scrape")
@@ -63,7 +63,7 @@ def get_product_name(product):
     return name
 
 # return the image link of the product card given as argument
-def get_image_link(product_container):
+def get_product_image_link(product_container):
     try:
         for container in product_container:
             if container['class'][0] == 'image-wrapper':
@@ -86,7 +86,7 @@ def get_price_details(product_container):
         pass
 
 # return the reviews of the product card given as argument
-def get_review(product_container):
+def get_product_review(product_container):
     try:
         for container in product_container:
             if container['class'][0] == 'total-ratings':
@@ -95,7 +95,7 @@ def get_review(product_container):
     except:
         return int(0)
     # For the ideal data value, (i.e. 0 if no review) following tweak sould be provided:
-    # product_review = get_review(products)
+    # product_review = get_product_review(products)
     # if product_review is None:
     #     product_review = int(0)
 
@@ -105,6 +105,22 @@ def get_category(page):
     for tag in cat_section.find_all('span'):
         tag.replace_with('')
     return cat_section.text
+
+# return the foreign key value for the product
+def select_category_id(product_category):
+    if product_category == 'Cables':
+        cat_id = 1
+    elif product_category == 'Wireless Speakers':
+        cat_id = 2
+    elif product_category == 'Computing & Gaming':
+        cat_id = 3
+    elif product_category == 'Smartwatches':
+        cat_id = 4
+    elif product_category == 'VR Headsets':
+        cat_id = 5
+    else:
+        cat_id = 0
+    return cat_id
 '''
     end of new modules
 '''
@@ -115,23 +131,24 @@ def scraper(database_connection, url_to_scrape):
     r = requests.get(url_to_scrape)
     main_soup = soup(r.text, 'html.parser')
     # marking category
-    product_cat = main_soup.h1
-    for tag in product_cat.find_all('span'):
-        tag.replace_with('')
-    product_category = product_cat.text # category
+    product_category = get_category(main_soup)
     product_group = main_soup.find_all('div', {'class' : ['sku', '-gallery']})
     # iteration over each product
-    for item in product_group:
-        product_sku = item['data-sku']
+    for product in product_group:
+        # getting product sku 
+        product_sku = product['data-sku']
         # Now search for the product in database relation
         primary_key_inDB = search_product_in_DB(database_cursor, product_sku) # acts as foreign key of price -> product
+        # If the product is already present in our database
         if primary_key_inDB:
-            product_content = item.a.find_all("div") # contents with the product card
-            product_discount = product_content[1].find_all("span")[0].text # discount
-            price_content = product_content[1].find_all("span")[1]
-            product_price = int(price_content.span.find_all("span")[1]['data-price']) # price
-            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP,'%s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
-            update_product_date_Q = "UPDATE products SET date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (primary_key_inDB) # aka foreign key
+            product_container = product.find_all("div") # all divs inside card listed
+            product_discount, product_price = get_price_details(product_container)
+            product_review = get_product_review(product_container)
+            if product_review is None:
+                product_review = int(0)
+            # SQL query to update price to an existing product
+            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%d', CURRENT_TIMESTAMP,'%s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
+            update_product_date_Q = "UPDATE products SET reviews = '%d', date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (product_review,primary_key_inDB) # aka foreign key
             try:
                 database_cursor.execute(insert_price_Q)
                 database_cursor.execute(update_product_date_Q)
@@ -139,33 +156,24 @@ def scraper(database_connection, url_to_scrape):
                 print("[%s] Updated existing product" % primary_key_inDB)
             except:
                 db.rollback()
-        # as the product is new (not in database), let's make a new entry for product and prices
+        # as the product is new (not in database), the script make a new entry for product and prices
         else:
-            if item.find_all("div")[1].find_all("span")[0]['class'] == ['sale-flag-percent']:
-                product_content = item.a.find_all("div") # contents within the product card
-                product_discount = product_content[1].find_all("span")[0].text # discount
-                price_content = product_content[1].find_all("span")[1]
-                product_price = int(price_content.span.find_all("span")[1]['data-price']) # price
-                product_name = item.a.h2.text.strip().replace('\u00a0','') # name
-                product_link = item.a['href'] # link
-                product_image_link = product_content[0].noscript.img['src'] # image link
-                if product_category == 'Cables':
-                    cat_id = 1
-                elif product_category == 'Wireless Speakers':
-                    cat_id = 2
-                elif product_category == 'Computing & Gaming':
-                    cat_id = 3
-                elif product_category == 'Smartwatches':
-                    cat_id = 4
-                elif product_category == 'VR Headsets':
-                    cat_id = 5
-                else:
-                    cat_id = 0
-                insert_product_Q = "INSERT INTO products(sku, product_name, category, link, image_link)VALUES('%s', '%s', '%d', '%s', '%s')" % (product_sku, product_name.strip().replace('\u2013',''), cat_id, product_link, product_image_link)
+            if check_discount(product):
+                product_container = product.a.find_all("div") # contents within the product card
+                product_discount, product_price = get_price_details(product_container)
+                product_brand = get_product_brand(product)
+                product_name = get_product_name(product)
+                product_link = product.a['href'] # link
+                product_image_link = get_product_image_link(product_container) # image link
+                product_reviews = get_product_review(product_container)
+                if product_reviews is None:
+                    product_reviews = int(0)
+                product_category_id = select_category_id(product_category)
+                insert_product_Q = "INSERT INTO products(sku, brand, name, category, link, image_link, reviews) VALUES ('%s', '%s', '%s', '%d', '%s', '%s', '%d');" % (product_sku, product_brand, product_name, product_category_id, product_link, product_image_link, product_reviews)
                 try:
                     database_cursor.execute(insert_product_Q)
                     foreign_key = search_product_in_DB(database_cursor, product_sku) # foreign key to link price with product
-                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%s', CURRENT_TIMESTAMP, '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
+                    database_cursor.execute("INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%d', CURRENT_TIMESTAMP, '%s')" % (foreign_key, product_price, product_discount, 'NPR'))
                     db.commit()
                     print("[%s] Added new product and price" % product_sku)
                 except:
