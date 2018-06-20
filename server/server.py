@@ -51,12 +51,14 @@ def build_product_list(cursor, product_results):
         product_unit = {
             'id' : data[0],
             'sku' : data[1],
-            'name' : data[2],
-            'category' : data[3],
-            'link' : data[4],
-            'image_link' : data[5],
-            'date_issued' : data[6].strftime('%c'),
-            'date_updated' : data[7].strftime('%c'),
+            'brand' : data[2],
+            'name' : data[3],
+            'category' : data[4],
+            'link' : data[5],
+            'image_link' : data[6],
+            'reviews' : data[7],
+            'date_issued' : data[8].strftime('%c'),
+            'date_updated' : data[9].strftime('%c'),
             'prices' : get_prices(cursor, data[0], one_price=True)
         }
         array_of_products.append(product_unit)
