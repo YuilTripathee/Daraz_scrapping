@@ -9,14 +9,6 @@ r = requests.get('https://www.daraz.com.np/phones-tablets/')
 my_soup = soup(r.text, 'html.parser')
 containers = my_soup.find_all("div",{"class":['sku', '-gallery']})
 
-# # Writing into CSV
-# filename = "products.csv"
-# f = open(filename, 'w')
-
-# fileheaders = 'product_brand, product_name, product_hash, product_link, product_image_link, product_discount, product_price, product_review\n'
-
-# f.write(fileheaders)
-
 # return brand name of the product
 def get_product_brand(product):
     for container in product.h2.find_all("span"):
