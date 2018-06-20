@@ -6,7 +6,7 @@ import time
 import json       
 import threading
 
-# gives a cursor
+# returns a database cursor to perform SQL operations
 def get_cursor():
     DB_conf_data = json.load(open('./config/DBconf.json', 'r+', encoding='utf-8'))
     db = pymysql.connect(DB_conf_data['server'], DB_conf_data['username'], DB_conf_data['password'], DB_conf_data['database'])
@@ -36,6 +36,78 @@ def search_product_in_DB(database_cursor, sku_data):
     else:
         return None
 
+'''
+    start of new modules
+'''
+# checks the discount in the product card given as argument
+def check_discount(product):
+    try:
+        for container in product.find_all("span"):
+            if container['class'][0] == 'sale-flag-percent':
+                return True
+    except:
+        return False
+
+# return brand name from the product card given as argument
+def get_product_brand(product):
+    for container in product.h2.find_all("span"):
+        if container['class'][0] == 'brand':
+            brand = container.text
+    return brand
+
+# return brand name from the product card given as argument
+def get_product_name(product):
+    for container in product.h2.find_all("span"):
+        if container['class'][0] == 'name':
+            name = container.text
+    return name
+
+# return the image link of the product card given as argument
+def get_image_link(product_container):
+    try:
+        for container in product_container:
+            if container['class'][0] == 'image-wrapper':
+                return container.img["data-src"]
+    except:
+        pass
+
+# returns the price details for the products provided
+def get_price_details(product_container):
+    try:
+        for container in product_container:
+            if container['class'][0] == 'price-container':
+                disc_raw = container.find_all("span")[0].text.strip().replace('-','')
+                product_discount = int(disc_raw.strip().replace('%',''))
+                price_mini = container.find_all("span")[1]
+                product_price = int(price_mini.span.find_all("span")[1]['data-price'])
+                break
+        return product_discount, product_price
+    except:
+        pass
+
+# return the reviews of the product card given as argument
+def get_review(product_container):
+    try:
+        for container in product_container:
+            if container['class'][0] == 'total-ratings':
+                rev1 = container.text.strip().replace('(','')
+                return int(rev1.strip().replace(')',''))
+    except:
+        return int(0)
+    # For the ideal data value, (i.e. 0 if no review) following tweak sould be provided:
+    # product_review = get_review(products)
+    # if product_review is None:
+    #     product_review = int(0)
+
+# return the category from the page given as argument
+def get_category(page):
+    cat_section = page.h1
+    for tag in cat_section.find_all('span'):
+        tag.replace_with('')
+    return cat_section.text
+'''
+    end of new modules
+'''
 # scraper function that takes single url and scrap the contents
 def scraper(database_connection, url_to_scrape):
     db = database_connection
@@ -141,4 +213,3 @@ if __name__ == '__main__':
     # running threads
     for thread in thread_objects:
         thread.start()
-    
