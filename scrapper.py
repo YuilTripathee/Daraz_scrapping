@@ -36,9 +36,6 @@ def search_product_in_DB(database_cursor, sku_data):
     else:
         return None
 
-'''
-    start of new modules
-'''
 # checks the discount in the product card given as argument
 def check_discount(product):
     try:
@@ -52,7 +49,7 @@ def check_discount(product):
 def get_product_brand(product):
     for container in product.h2.find_all("span"):
         if container['class'][0] == 'brand':
-            brand = container.text
+            brand = container.text.strip().replace('\u00a0','')
     return brand
 
 # return brand name from the product card given as argument
@@ -121,9 +118,7 @@ def select_category_id(product_category):
     else:
         cat_id = 0
     return cat_id
-'''
-    end of new modules
-'''
+
 # scraper function that takes single url and scrap the contents
 def scraper(database_connection, url_to_scrape):
     db = database_connection
