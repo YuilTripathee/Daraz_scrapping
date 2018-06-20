@@ -37,7 +37,8 @@ def get_review(product_container):
     try:
         for container in product_container:
             if container['class'][0] == 'total-ratings':
-                return container.text
+                rev1 = container.text.strip().replace('(','')
+                return int(rev1.strip().replace(')',''))
     except:
         return 0
 
@@ -64,7 +65,8 @@ def get_price_details(product_container):
     try:
         for container in product_container:
             if container['class'][0] == 'price-container':
-                product_discount = container.find_all("span")[0].text
+                disc_raw = container.find_all("span")[0].text.strip().replace('-','')
+                product_discount = int(disc_raw.strip().replace('%',''))
                 price_mini = container.find_all("span")[1]
                 product_price = price_mini.span.find_all("span")[1]['data-price']
                 break
