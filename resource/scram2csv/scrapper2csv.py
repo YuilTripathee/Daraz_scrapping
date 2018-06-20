@@ -32,6 +32,7 @@ def get_product_name(product):
         if container['class'][0] == 'name':
             name = container.text
     return name
+
 # return the reviews of the product
 def get_review(product_container):
     try:

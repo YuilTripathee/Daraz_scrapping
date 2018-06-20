@@ -1,26 +1,3 @@
-'''
-    Reporting solution to a bug:
-    Bug type            : Problem in sorting date string
-    Possible solution   : Change data type where timestamp is implemented into TIMESTAMP
-    Algorithm:
-        [done] 1. Change all string based data format to database's TIMESTAMP format
-        [done] 2. Update the queries in scraper program:
-                a. Optimise all insert query where timestamp has to be implemented
-                b. Make solution requiring update query in timestamp
-        [TBD ] 3. Perform merge operation for the products and prices
-                -->  you can either sort the price data by using either their primary key
-                    (i.e. id) or the data can be sorted by date.
-                --> sorting data by primary key is more sensible
-        [TBD ] 4. Optimise API section with merged products and prices.
-
-    Note    : Database system is hereby found beneficial to our project for its atomicity,
-              consistency, reliability and durability of the data bounded into the database
-              system. Moreover, it's possible cons would be that if project is highly 
-              depended to the database systems, optimal state of database should be 
-              maintained in real time execution of the project. This issue is depreciated as
-              back-end services rely on servers on which problem of closing database system
-              may only happen in worst scenarios.
-'''
 import pymysql
 import requests 
 import urllib
