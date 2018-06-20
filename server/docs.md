@@ -52,3 +52,5 @@ http://localhost:8080/product/?sku=AC014EL02H18WNAFAMZ
   }
 }
 ```
+
+# No more originals
