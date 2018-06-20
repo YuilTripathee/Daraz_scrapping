@@ -40,7 +40,7 @@ def get_review(product_container):
                 rev1 = container.text.strip().replace('(','')
                 return int(rev1.strip().replace(')',''))
     except:
-        return 0
+        return int(0)
 
 # return the image link of the product
 def get_image_link(product_container):
@@ -68,7 +68,7 @@ def get_price_details(product_container):
                 disc_raw = container.find_all("span")[0].text.strip().replace('-','')
                 product_discount = int(disc_raw.strip().replace('%',''))
                 price_mini = container.find_all("span")[1]
-                product_price = price_mini.span.find_all("span")[1]['data-price']
+                product_price = int(price_mini.span.find_all("span")[1]['data-price'])
                 break
         return product_discount, product_price
     except:
@@ -86,12 +86,15 @@ try:
             product_image_link = get_image_link(product_container)
             product_discount, product_price = get_price_details(product_container)
             product_review = get_review(product_container)
+            if product_review is None:
+                product_review = int(0)
             print('\n')
             print("Brand\t: ", product_brand)
             print("Name\t: ", product_name)
             print("SKU\t: ", product_hash)
             print("URL\t: ", product_link)
             print("Image\t: ", product_image_link)
+            print("Price\t: ", product_price)
             print("Disc\t: ", product_discount)
             print("Review\t: ", product_review)
             # f.write(product_brand + product_name.replace(',','') + "," + product_hash + "," + urllib.parse.quote_plus(product_link) + "," + urllib.parse.quote_plus(product_image_link) + "," + product_discount + "," + product_price + product_review + "\n")
