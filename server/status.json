@@ -1,14 +1,18 @@
 [
     {
+        "status_code" : "0",
+        "status_message" : "Status for sampling"
+    }
+    ,{
         "status_code" : 1,
         "status_message" : "Everything working properly"
     },
     {
         "status_code" : -1,
-        "status_message" : "Invalid arguments provided"
+        "status_message" : "The requested data not found in database"
     },
     {
         "status_code" : -2,
-        "status_message" : "Data not found in server"
+        "status_message" : "Invalid arguments sent"
     }
 ]
