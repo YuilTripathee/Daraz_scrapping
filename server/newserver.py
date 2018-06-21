@@ -136,9 +136,9 @@ def sendOneProduct():
     # making fullPrice
     if fullPrice is False:
         fullPrice = False
-    elif fullPrice == 'false':
+    elif fullPrice.lower() == 'false':
         fullPrice = False
-    elif fullPrice == 'true':
+    elif fullPrice.lower() == 'true':
         fullPrice = True
     else:
         return jsonify(status_codes[3]), 400
@@ -150,10 +150,10 @@ def sendOneProduct():
         }
         message = status_codes[1]
         message['data'] = data
-        return jsonify(message)
+        return jsonify(message), 200
     except:
         message = status_codes[2]
-        return jsonify(message)
+        return jsonify(message), 400
 
 def getProduct(database_cursor, sku, fullPrice = False):
     get1ProductSKU = "SELECT * FROM products WHERE sku = '%s'" % (sku)
