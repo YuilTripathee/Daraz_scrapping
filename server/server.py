@@ -8,7 +8,7 @@ cache = SimpleCache()
 app = Flask(__name__) # define app using flask
 
 # Note : apply this in development environment only
-# app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 # acquiring database configuration for connection to the database and query execution
 with open('../config/DBconf.json', 'r+', encoding='utf-8') as fp:

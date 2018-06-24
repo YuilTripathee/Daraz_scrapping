@@ -25,24 +25,40 @@ with open('status.json', 'r', encoding='utf-8') as fp:
     fp.close()
 
 # common function to build JSON data from tuple incoming from database
-def buildProduct(database_cursor, product_results_tuple, fullPrice = False):
+def buildProduct(database_cursor, product_results_tuple = None, one_product_tuple=None, fullPrice = False):
     array_of_products = []
-    for data in product_results_tuple:
-        product_unit = {
-            'id' : data[0],
-            'sku' : data[1],
-            'brand' : data[2],
-            'name' : data[3],
-            'category' : data[4],
-            'link' : data[5],
-            'image_link' : data[6],
-            'reviews' : data[7],
-            'date_issued' : data[8].strftime('%c'),
-            'date_updated' : data[9].strftime('%c'),
-            'prices' : getPrice(database_cursor, data[0], fullPrice)
+    if one_product_tuple is not None:
+        product = {
+            'id' : one_product_tuple[0],
+            'sku' : one_product_tuple[1],
+            'brand' : one_product_tuple[2],
+            'name' : one_product_tuple[3],
+            'category' : one_product_tuple[4],
+            'link' : one_product_tuple[5],
+            'image_link' : one_product_tuple[6],
+            'reviews' : one_product_tuple[7],
+            'date_issued' : one_product_tuple[8].strftime('%c'),
+            'date_issued' : one_product_tuple[9].strftime('%c'),
+            'prices' : getPrice(database_cursor, one_product_tuple[0], fullPrice)
         }
-        array_of_products.append(product_unit)
-    return array_of_products     
+        return product
+    else:
+        for data in product_results_tuple:
+            product_unit = {
+                'id' : data[0],
+                'sku' : data[1],
+                'brand' : data[2],
+                'name' : data[3],
+                'category' : data[4],
+                'link' : data[5],
+                'image_link' : data[6],
+                'reviews' : data[7],
+                'date_issued' : data[8].strftime('%c'),
+                'date_updated' : data[9].strftime('%c'),
+                'prices' : getPrice(database_cursor, data[0], fullPrice)
+            }
+            array_of_products.append(product_unit)
+        return array_of_products     
     
 # common function to return the price for the product specified
 def getPrice(database_cursor, foreign_key_in_price, fullPrice = False):
@@ -63,7 +79,7 @@ def getPrice(database_cursor, foreign_key_in_price, fullPrice = False):
                 price_list.append(price_unit)
             return price_list 
         else:
-            price_result = database_cursor.fetchone()
+            price_result = database_cursor.fetchall()[-1]
             price_unit = {
                 'price' : price_result[2],
                 'discount' : price_result[3],
@@ -126,7 +142,56 @@ def sendCategory():
 
 @app.route('/api/products/skugroup/', methods=['GET'])
 def sendGroup():
-    return "All the products defined by the SKU list"
+    args = request.args
+    skustr = args.get('sku', '')
+    fullPrice = args.get('fullPrice', False)
+    # making fullPrice
+    if fullPrice is False:
+        fullPrice = False
+    elif fullPrice.lower() == 'false':
+        fullPrice = False
+    elif fullPrice.lower() == 'true':
+        fullPrice = True
+    else:
+        return jsonify(status_codes[3]), 400
+    # now get list of SKUs
+    if skustr == '':
+        return jsonify(status_codes[3]), 400
+    # making database cursor
+    database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
+    return fetchProductGroup(database_cursor, skustr, fullPrice)
+def fetchProductGroup(database_cursor, skustr, fullPrice):
+    message = cache.get('groupProduct%s%s' % (skustr, str(fullPrice).lower()) )
+    if message is None:
+        try:
+            data = {
+                # "category" : getCategory(database_cursor, findCategoryID(database_cursor, sku)),
+                "products" : getProductGroup(database_cursor, skustr, fullPrice) 
+            }
+            message = status_codes[1]
+            message['data'] = data
+            cache.set('groupProduct%s%s' %(skustr, str(fullPrice).lower()), message, timeout=600)
+            return jsonify(message), 200
+        except:
+            return jsonify(status_codes[2]), 404
+    return jsonify(message), 200
+def getProductGroup(database_cursor, skustr, fullPrice=False):
+    SKUs = skustr.split(',')
+    products_list = []
+    for sku in SKUs:
+        product_unit = getProduct(database_cursor, sku, fullPrice = fullPrice)
+        products_list.append(product_unit)
+    return products_list
+
+def getProduct(database_cursor, sku, fullPrice = False):
+    get1ProductSKU = "SELECT * FROM products WHERE sku = '%s'" % (sku)
+    try:
+        database_cursor.execute(get1ProductSKU)
+        product_result = database_cursor.fetchone()
+        product = buildProduct(database_cursor, one_product_tuple=product_result, fullPrice = fullPrice)
+        return product
+    except:
+        return int('1+2+3')
 
 @app.route('/api/product/', methods=['GET'])
 def sendOneProduct():
@@ -143,36 +208,27 @@ def sendOneProduct():
     else:
         return jsonify(status_codes[3]), 400
     database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
-    try:
-        data = {
-            "category" : getCategory(database_cursor, findCategoryID(database_cursor, sku)),
-            "product" : getProduct(database_cursor, sku, fullPrice = fullPrice)[0]
-        }
-        message = status_codes[1]
-        message['data'] = data
-        return jsonify(message), 200
-    except:
-        message = status_codes[2]
-        return jsonify(message), 400
+    return fetchoneProduct(database_cursor, sku, fullPrice)
+def fetchoneProduct(database_cursor, sku, fullPrice):
+    message = cache.get('oneProduct%s%s' %(sku, str(fullPrice).lower()))
+    if message is None:
+        try:
+            data = {
+                "category" : getCategory(database_cursor, findCategoryID(database_cursor, sku)),
+                "product" : getProduct(database_cursor, sku, fullPrice = fullPrice)
+            }
+            message = status_codes[1]
+            message['data'] = data
+            cache.set('oneProduct%s%s' %(sku, str(fullPrice).lower()), message, timeout=600)
+            return jsonify(message), 200
+        except:
+            return jsonify(status_codes[2]), 404
+    return jsonify(message), 200
 
-def getProduct(database_cursor, sku, fullPrice = False):
-    get1ProductSKU = "SELECT * FROM products WHERE sku = '%s'" % (sku)
-    try:
-        database_cursor.execute(get1ProductSKU)
-        product_result = database_cursor.fetchall()
-        product = buildProduct(database_cursor, product_result, fullPrice = fullPrice)
-        return product
-    except:
-        return "Unable to fetch data from database"
-
+    
 @app.route('/api/stats/', methods=['GET'])
 def sendStats():
     return "Data for statistical analysis"
-
-def get_all_products(random = False, size = None, maxPrice = None, minPrice = None, order = None, searchStr = None, fullPrice = False):
-    cacheData = cache.get('%s%d%d%d%s%s%s' % (random, size, maxPrice, minPrice, order, searchStr, fullPrice))
-    pass
-
    
 # Running flask application
 if __name__ == '__main__':
