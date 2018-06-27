@@ -38,7 +38,7 @@ def buildProduct(database_cursor, product_results_tuple = None, one_product_tupl
             'image_link' : one_product_tuple[6],
             'reviews' : one_product_tuple[7],
             'date_issued' : one_product_tuple[8].strftime('%c'),
-            'date_issued' : one_product_tuple[9].strftime('%c'),
+            'date_updated' : one_product_tuple[9].strftime('%c'),
             'prices' : getPrice(database_cursor, one_product_tuple[0], fullPrice)
         }
         return product
@@ -91,20 +91,53 @@ def getPrice(database_cursor, foreign_key_in_price, fullPrice = False):
         raise 
  
 # common function to return list of categories for reference
-def getCategory(database_cursor, category_id):
-    getCategoryQ = "SELECT * FROM category WHERE id = '%d'" % (category_id)
-    try:
-        database_cursor.execute(getCategoryQ)
-        catResult = database_cursor.fetchone()
-        categoryData = {
-            'id' : catResult[0],
-            'category' : catResult[1],
-            'sub_category' : catResult[2]
-        } 
-        return categoryData
-    except:
-        raise
-
+def getCategory(database_cursor, all_category = False, category_list = None, category_id = None):
+    if all_category == True:
+        getCategoryQ = "SELECT * FROM category;"
+        try:
+            database_cursor.execute(getCategoryQ)
+            catResult = database_cursor.fetchone()
+            return_list = []
+            for data in catResult:
+                categoryData = {
+                    'id' : data[0],
+                    'category' : data[1],
+                    'sub_category' : data[2]
+                } 
+                return_list.append(return_list)
+                return return_list
+        except:
+            pass
+    elif category_list is not None:
+        return_list = []
+        for category_id in category_list:
+            getCategoryQ = "SELECT * FROM category WHERE id = '%d'" % (category_id)
+            try:
+                database_cursor.execute(getCategoryQ)
+                catResult = database_cursor.fetchone()
+                categoryData = {
+                    'id' : catResult[0],
+                    'category' : catResult[1],
+                    'sub_category' : catResult[2]
+                } 
+                return_list.append(categoryData)
+            except:
+                break       
+        return return_list
+    else:
+        getCategoryQ = "SELECT * FROM category WHERE id = '%d'" % (category_id)
+        try:
+            database_cursor.execute(getCategoryQ)
+            catResult = database_cursor.fetchone()
+            categoryData = {
+                'id' : catResult[0],
+                'category' : catResult[1],
+                'sub_category' : catResult[2]
+            } 
+            return categoryData
+        except:
+            raise
+ 
 # find category for a single product
 def findCategoryID(database_cursor, sku):
     findCategoryQ = "SELECT category FROM products WHERE sku = '%s'" % (sku)
@@ -132,14 +165,122 @@ def send_info_msg():
     }
     return jsonify(data)
 
+# route to return the number of random products as specified
 @app.route('/api/products/', methods=['GET'])
-def sendProducts():
-    return "All the products!!!"
+def sendSomeProducts():
+    # final test rendering
+    return jsonify({ 'data' : {
+        'number' : None,
+        'minPrice' : None,
+        'maxPrice' : None,
+        'order' : None,
+        'fullPrice' : None
+    }}), 200
 
+# route to provide all the products in the database
+@app.route('/api/products/all/', methods=['GET'])
+def sendAllProducts():
+    # final test rendering
+    return jsonify({ 'data' : {
+        'minPrice' : None,
+        'maxPrice' : None,
+        'order' : None,
+        'fullPrice' : None
+    }}), 200
+    
+# route to return a search query
+@app.route('/api/products/search/', methods=['GET'])
+def sendSearchResults():
+    return jsonify({
+        'data' : {
+            'query' : None,
+            'fullPrice' : None
+        }
+    }), 200
+
+# route to return the product from the category specified
 @app.route('/api/products/category/', methods=['GET'])
-def sendCategory():
-    return "All the products in this category"
+def sendProductInCategory():
+    args = request.args
+    # getting category number
+    try:
+        category = int(args.get('category', None))
+    except TypeError:
+        return jsonify(status_codes[6]), 500
+    except ValueError:
+        return jsonify(status_codes[4]), 500
+     
+    # fetching the number of required products
+    try:
+        number = int(args.get('number', None))
+    except TypeError:
+        number = None
+    except ValueError:
+        return jsonify(status_codes[4]), 500
+    
+    # fetching minimum price range from URL
+    try:
+        minPrice = int(args.get('minPrice', None))
+        if minPrice == 0:
+            minPrice = None
+    except TypeError:
+        minPrice = None
+    except ValueError:
+        return jsonify(status_codes[4]), 500
+    
+    # fetching maximum price range from URL
+    try:
+        maxPrice = int(args.get('maxPrice', None))
+        if maxPrice == 0:
+            maxPrice = None
+    except TypeError:
+        maxPrice = None
+    except ValueError:
+        return jsonify(status_codes[4]), 500
+        
 
+    # taking order field
+    order = args.get('order', None)
+    if order is None:
+        order = None
+    elif order == 'time':
+        order = 'time'
+    elif order == 'price':
+        order = 'price'
+    elif order == 'reviews':
+        order = 'reviews'
+    else:
+        return jsonify(status_codes[4]), 500
+
+    # choosing if all the prices tracked to be displayed or not    
+    fullPrice = args.get('fullPrice', False)
+    # making fullPrice
+    if fullPrice is False:
+        fullPrice = False
+    elif fullPrice.lower() == 'false':
+        fullPrice = False
+    elif fullPrice.lower() == 'true':
+        fullPrice = True
+    else:
+        return jsonify(status_codes[3]), 400
+    return jsonify({
+        'data' : {
+            'category' : category,
+            'number' : number,
+            'minPrice' : minPrice,
+            'maxPrice' : maxPrice,
+            'order' : order,
+            'fullPrice' : fullPrice
+        }
+    }), 200
+
+# route that return status codes to the browser
+@app.route('/api/statusCodes/', methods=['GET'])
+def sendStatusCodes():
+    with open('status.json', 'r', encoding='utf-8') as fp:
+        return jsonify(json.load(fp)), 200
+
+# route where you set 
 @app.route('/api/products/skugroup/', methods=['GET'])
 def sendGroup():
     args = request.args
@@ -153,10 +294,10 @@ def sendGroup():
     elif fullPrice.lower() == 'true':
         fullPrice = True
     else:
-        return jsonify(status_codes[3]), 400
+        return jsonify(status_codes[3]), 500
     # now get list of SKUs
     if skustr == '':
-        return jsonify(status_codes[3]), 400
+        return jsonify(status_codes[3]), 500
     # making database cursor
     database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
     return fetchProductGroup(database_cursor, skustr, fullPrice)
@@ -165,7 +306,7 @@ def fetchProductGroup(database_cursor, skustr, fullPrice):
     if message is None:
         try:
             data = {
-                # "category" : getCategory(database_cursor, findCategoryID(database_cursor, sku)),
+                "category" : getCategoryGroup(database_cursor, skustr),
                 "products" : getProductGroup(database_cursor, skustr, fullPrice) 
             }
             message = status_codes[1]
@@ -175,6 +316,25 @@ def fetchProductGroup(database_cursor, skustr, fullPrice):
         except:
             return jsonify(status_codes[2]), 404
     return jsonify(message), 200
+
+# returns the list of category for the product picked in group
+def getCategoryGroup(database_cursor, skustr):
+    SKU = skustr.split(',')
+    raw_list = []
+    for sku in SKU:
+        database_cursor.execute("SELECT category FROM products WHERE sku = '%s';"%sku)
+        raw_list.append(database_cursor.fetchone())
+    cooked_list = []
+    for data in raw_list:
+        cooked_list.append(data[0])
+    fine_list = list(set(cooked_list))
+    if len(fine_list) == 1:
+        category_list = getCategory(database_cursor, category_id=fine_list[0])
+    else:
+        category_list = getCategory(database_cursor, category_list=fine_list)        
+    return category_list
+
+# returns the list of products as referred in skustr
 def getProductGroup(database_cursor, skustr, fullPrice=False):
     SKUs = skustr.split(',')
     products_list = []
@@ -183,6 +343,7 @@ def getProductGroup(database_cursor, skustr, fullPrice=False):
         products_list.append(product_unit)
     return products_list
 
+# returns an inidividual product when sku of the product provided
 def getProduct(database_cursor, sku, fullPrice = False):
     get1ProductSKU = "SELECT * FROM products WHERE sku = '%s'" % (sku)
     try:
@@ -214,7 +375,7 @@ def fetchoneProduct(database_cursor, sku, fullPrice):
     if message is None:
         try:
             data = {
-                "category" : getCategory(database_cursor, findCategoryID(database_cursor, sku)),
+                "category" : getCategory(database_cursor, category_id=findCategoryID(database_cursor, sku)),
                 "product" : getProduct(database_cursor, sku, fullPrice = fullPrice)
             }
             message = status_codes[1]
@@ -224,11 +385,6 @@ def fetchoneProduct(database_cursor, sku, fullPrice):
         except:
             return jsonify(status_codes[2]), 404
     return jsonify(message), 200
-
-    
-@app.route('/api/stats/', methods=['GET'])
-def sendStats():
-    return "Data for statistical analysis"
    
 # Running flask application
 if __name__ == '__main__':
