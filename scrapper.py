@@ -139,21 +139,24 @@ def scraper(database_connection, url_to_scrape):
         primary_key_inDB = search_product_in_DB(database_cursor, product_sku) # acts as foreign key of price -> product
         # If the product is already present in our database
         if primary_key_inDB:
-            product_container = product.find_all("div") # all divs inside card listed
-            product_discount, product_price = get_price_details(product_container)
-            product_review = get_product_review(product_container)
-            if product_review is None:
-                product_review = int(0)
-            # SQL query to update price to an existing product
-            insert_price_Q = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%d', CURRENT_TIMESTAMP,'%s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
-            update_product_date_Q = "UPDATE products SET reviews = '%d', date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (product_review,primary_key_inDB) # aka foreign key
             try:
-                database_cursor.execute(insert_price_Q)
-                database_cursor.execute(update_product_date_Q)
-                db.commit()
-                print("[%s] Updated existing product" % primary_key_inDB)
+                product_container = product.find_all("div") # all divs inside card listed
+                product_discount, product_price = get_price_details(product_container)
+                product_review = get_product_review(product_container)
+                if product_review is None:
+                    product_review = int(0)
+                # SQL query to update price to an existing product
+                insert_price_Q = "INSERT INTO prices(prod_id, price, discount, date, currency_iso)VALUES('%d','%d','%d', CURRENT_TIMESTAMP,'%s')" % (primary_key_inDB, product_price, product_discount, 'NPR')
+                update_product_date_Q = "UPDATE products SET reviews = '%d', date_updated = CURRENT_TIMESTAMP WHERE id = '%d'" % (product_review,primary_key_inDB) # aka foreign key
+                try:
+                    database_cursor.execute(insert_price_Q)
+                    database_cursor.execute(update_product_date_Q)
+                    db.commit()
+                    print("[%s] Updated existing product" % primary_key_inDB)
+                except:
+                    db.rollback()
             except:
-                db.rollback()
+                continue
         # as the product is new (not in database), the script make a new entry for product and prices
         else:
             if check_discount(product):
