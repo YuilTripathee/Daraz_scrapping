@@ -236,6 +236,8 @@ def sendSomeProducts():
         maxPrice = int(args.get('maxPrice', None))
         if maxPrice == 0:
             maxPrice = None
+        if maxPrice < minPrice:
+            return jsonify(status_codes[3]), 500
     except TypeError:
         maxPrice = None
     except ValueError:
@@ -294,6 +296,8 @@ def sendAllProducts():
         maxPrice = int(args.get('maxPrice', None))
         if maxPrice == 0:
             maxPrice = None
+        if maxPrice < minPrice:
+            return jsonify(status_codes[3]), 500
     except TypeError:
         maxPrice = None
     except ValueError:
@@ -403,6 +407,8 @@ def sendProductInCategory():
         maxPrice = int(args.get('maxPrice', None))
         if maxPrice == 0:
             maxPrice = None
+        if maxPrice < minPrice:
+            return jsonify(status_codes[3]), 500
     except TypeError:
         maxPrice = None
     except ValueError:
