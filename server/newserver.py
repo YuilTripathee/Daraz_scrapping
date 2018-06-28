@@ -259,7 +259,6 @@ def sendSomeProducts():
     database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
     # dumping out data
     return fetchProductRandom(database_cursor, number, fullPrice=fullPrice)
-
 def fetchProductRandom(database_cursor, number, fullPrice=False):
     getRandomQ = "SELECT * FROM products ORDER by RAND() LIMIT %d" % number
     try:
