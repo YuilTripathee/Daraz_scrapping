@@ -93,13 +93,14 @@ def getPrice(database_cursor, foreign_key_in_price, fullPrice = False):
         raise 
  
 # common function to return list of categories for reference
+# common function to return list of categories for reference
 def getCategory(database_cursor, all_category = False, category_list = None, category_id = None):
     # returns the whole set of categories present in the database
     if all_category == True:
-        getCategoryQ = "SELECT * FROM category;"
+        getCategoryQ = "SELECT * FROM category"
         try:
             database_cursor.execute(getCategoryQ)
-            catResult = database_cursor.fetchone()
+            catResult = database_cursor.fetchall()
             return_list = []
             for data in catResult:
                 categoryData = {
@@ -107,8 +108,8 @@ def getCategory(database_cursor, all_category = False, category_list = None, cat
                     'category' : data[1],
                     'sub_category' : data[2]
                 } 
-                return_list.append(return_list)
-                return return_list
+                return_list.append(categoryData)
+            return return_list
         except:
             pass
     # returns the list of category objects when array of category supplied
@@ -243,19 +244,6 @@ def sendSomeProducts():
     except ValueError:
         return jsonify(status_codes[4]), 500
     
-    # taking order field
-    order = args.get('order', None)
-    if order is None:
-        order = None
-    elif order == 'time':
-        order = 'time'
-    elif order == 'price':
-        order = 'price'
-    elif order == 'reviews':
-        order = 'reviews'
-    else:
-        return jsonify(status_codes[4]), 500
-    
     # choosing if all the prices tracked to be displayed or not    
     fullPrice = args.get('fullPrice', False)
     # making fullPrice
@@ -267,15 +255,32 @@ def sendSomeProducts():
         fullPrice = True
     else:
         return jsonify(status_codes[3]), 400
+        # making database cursor
+    database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
+    # dumping out data
+    return fetchProductRandom(database_cursor, number, fullPrice=fullPrice)
 
-    # final test rendering
-    return jsonify({ 'data' : {
-        'number' : number,
-        'minPrice' : minPrice,
-        'maxPrice' : maxPrice,
-        'order' : order,
-        'fullPrice' : fullPrice
-    }}), 200
+def fetchProductRandom(database_cursor, number, fullPrice=False):
+    getRandomQ = "SELECT * FROM products ORDER by RAND() LIMIT %d" % number
+    try:
+        database_cursor.execute(getRandomQ)
+        product_results_tuple = database_cursor.fetchall()
+        data = {
+            "category" : getCategory(database_cursor, all_category=True),
+            "products" : buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=fullPrice)
+        }
+        message = status_codes[1]
+        message['data'] = data
+        return jsonify(message), 200
+    except:
+        return jsonify(status_codes[2]), 404
+    # # final test rendering
+    # return jsonify({ 'data' : {
+    #     'number' : number,
+    #     'minPrice' : minPrice,
+    #     'maxPrice' : maxPrice,
+    #     'fullPrice' : fullPrice
+    # }}), 200
 
 # route to provide all the products in the database
 @app.route('/api/products/all/', methods=['GET'])
