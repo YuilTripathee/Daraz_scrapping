@@ -493,8 +493,15 @@ def fetchProductGroup(database_cursor, skustr, fullPrice):
 @app.route('/api/product/', methods=['GET'])
 def sendOneProduct():
     args = request.args
+    try:
+        sku = str(args.get('sku', ''))
+        if sku == '':
+            return jsonify(status_codes[3]), 500
+    except TypeError:
+        return jsonify(status_codes[6]), 500
+    except ValueError:
+        return jsonify(status_codes[4]), 500
     fullPrice = args.get('fullPrice', False)
-    sku = args.get('sku')
     # making fullPrice
     if fullPrice is False:
         fullPrice = False
