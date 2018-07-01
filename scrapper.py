@@ -108,14 +108,17 @@ def get_category(page):
 
 # return the foreign key value for the product
 def select_category_id(product_category):
-    if product_category.lower() == 'cables':
+    pcl = product_category.lower()
+    if pcl == 'cables':
         cat_id = 1
-    elif product_category.lower() == 'smart':
+    elif pcl == 'smart':
         cat_id = 2
-    elif product_category.lower() == 'wireless speakers':
+    elif pcl == 'wireless speakers':
         cat_id = 3
-    elif product_category.lower() == 'vr headsets':
+    elif pcl == 'vr headsets':
         cat_id = 4
+    elif pcl == 'smartphones':
+        cat_id = 5
     else:
         cat_id = None
     return cat_id
