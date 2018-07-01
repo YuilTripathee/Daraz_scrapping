@@ -339,7 +339,7 @@ def sendSearchResults():
     database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
     return fetchSearchedProduct(database_cursor, query, fullPrice)
 def fetchSearchedProduct(database_cursor, search_query, fullPrice = False):
-    searchProductQ = "SELECT * FROM products WHERE name LIKE '%%%s%%' OR brand LIKE '%%%s%%';" %(search_query, search_query)
+    searchProductQ = "SELECT * FROM `products` WHERE MATCH(brand,name) AGAINST ('%s' IN NATURAL LANGUAGE MODE)" % search_query
     try:
         database_cursor.execute(searchProductQ)
         product_results_tuple = database_cursor.fetchall()
@@ -347,6 +347,8 @@ def fetchSearchedProduct(database_cursor, search_query, fullPrice = False):
             "category" : getCategory(database_cursor, all_category=True),
             "products" : buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=fullPrice)
         }
+        if len(data['products']) is 0:
+            return jsonify(status_codes[2]), 404
         message = status_codes[1]
         message['data'] = data
         return jsonify(message), 200
@@ -504,7 +506,7 @@ def sendOneProduct():
         return jsonify(status_codes[3]), 400
     database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
     return fetchoneProduct(database_cursor, sku, fullPrice)
-# prepare a whole response message when database_cursor and sku providedß
+# prepare a whole response message when database_cursor and sku provided
 def fetchoneProduct(database_cursor, sku, fullPrice):
     message = cache.get('oneProduct%s%s' %(sku, str(fullPrice).lower()))
     if message is None:
