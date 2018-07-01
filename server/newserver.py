@@ -317,10 +317,10 @@ def sendSearchResults():
     # get the query to search on database
     try:
         query = args.get('query', None)
-        if query == None:
-            return jsonify(status_codes[4]), 500
+        if query is None:
+            return jsonify(status_codes[7]), 500
         if query == '':
-            return jsonify(status_codes[4]), 500
+            return jsonify(status_codes[7]), 500
     except TypeError:
         return jsonify(status_codes[7]), 500
      
