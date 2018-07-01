@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup as soup
 
 # fetching down the page in web
-r = requests.get('https://www.daraz.com.np/phones-tablets/')
+r = requests.get('https://www.daraz.com.np/smartphones/')
 
 # making a soup
 my_soup = soup(r.text, 'html.parser')
