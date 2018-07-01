@@ -93,7 +93,6 @@ def getPrice(database_cursor, foreign_key_in_price, fullPrice = False):
         raise 
  
 # common function to return list of categories for reference
-# common function to return list of categories for reference
 def getCategory(database_cursor, all_category = False, category_list = None, category_id = None):
     # returns the whole set of categories present in the database
     if all_category == True:
@@ -222,28 +221,6 @@ def sendSomeProducts():
     except ValueError:
         return jsonify(status_codes[4]), 500
     
-    # fetching minimum price range from URL
-    try:
-        minPrice = int(args.get('minPrice', None))
-        if minPrice == 0:
-            minPrice = None
-    except TypeError:
-        minPrice = None
-    except ValueError:
-        return jsonify(status_codes[4]), 500
-
-    # fetching maximum price range from URL
-    try:
-        maxPrice = int(args.get('maxPrice', None))
-        if maxPrice == 0:
-            maxPrice = None
-        if maxPrice < minPrice:
-            return jsonify(status_codes[3]), 500
-    except TypeError:
-        maxPrice = None
-    except ValueError:
-        return jsonify(status_codes[4]), 500
-    
     # choosing if all the prices tracked to be displayed or not    
     fullPrice = args.get('fullPrice', False)
     # making fullPrice
@@ -273,13 +250,6 @@ def fetchProductRandom(database_cursor, number, fullPrice=False):
         return jsonify(message), 200
     except:
         return jsonify(status_codes[2]), 404
-    # # final test rendering
-    # return jsonify({ 'data' : {
-    #     'number' : number,
-    #     'minPrice' : minPrice,
-    #     'maxPrice' : maxPrice,
-    #     'fullPrice' : fullPrice
-    # }}), 200
 
 # route to provide all the products in the database
 @app.route('/api/products/all/', methods=['GET'])
