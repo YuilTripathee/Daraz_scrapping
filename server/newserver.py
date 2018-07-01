@@ -317,16 +317,13 @@ def sendSearchResults():
     # get the query to search on database
     try:
         query = args.get('query', None)
-        if query is None:
-            return jsonify(status_codes[7]), 500
-        elif query == '':
-            return jsonify(status_codes[7]), 500
-        else:
-            query = str(query)
+        if query == None:
+            return jsonify(status_codes[4]), 500
+        if query == '':
+            return jsonify(status_codes[4]), 500
     except TypeError:
         return jsonify(status_codes[7]), 500
-    
-    
+     
     # choosing if all the prices tracked to be displayed or not    
     fullPrice = args.get('fullPrice', False)
     # making fullPrice
