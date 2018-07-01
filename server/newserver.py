@@ -336,12 +336,28 @@ def sendSearchResults():
     else:
         return jsonify(status_codes[3]), 400
 
-    return jsonify({
-        'data' : {
-            'query' : query,
-            'fullPrice' : fullPrice
+    database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
+    return fetchSearchedProduct(database_cursor, query, fullPrice)
+def fetchSearchedProduct(database_cursor, search_query, fullPrice = False):
+    searchProductQ = "SELECT * FROM products WHERE name LIKE '%%%s%%' OR brand LIKE '%%%s%%';" %(search_query, search_query)
+    try:
+        database_cursor.execute(searchProductQ)
+        product_results_tuple = database_cursor.fetchall()
+        data = {
+            "category" : getCategory(database_cursor, all_category=True),
+            "products" : buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=fullPrice)
         }
-    }), 200
+        message = status_codes[1]
+        message['data'] = data
+        return jsonify(message), 200
+    except:
+        return jsonify(status_codes[2]), 404
+    # return jsonify({
+    #     'data' : {
+    #         'query' : query,
+    #         'fullPrice' : fullPrice
+    #     }
+    # }), 200
 
 # route to return the product from the category specified
 @app.route('/api/products/category/', methods=['GET'])
