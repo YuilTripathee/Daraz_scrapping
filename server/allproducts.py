@@ -3,17 +3,6 @@ import json
 import pymysql
 import time
 
-# Flask microservice modules
-from flask import Flask, jsonify, request
-from werkzeug.contrib.cache import SimpleCache
-
-# Flask app and cache declaration
-app = Flask(__name__)
-cache = SimpleCache()
-# Note : apply this in development environment only
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.config['JSON_SORT_KEYS'] = False
-
 # Acquire database config info
 with open('../config/DBconf.json', 'r', encoding='utf-8') as fp:
     DB_data = json.load(fp)
@@ -160,73 +149,9 @@ def getCategory(database_cursor, all_category = False, category_list = None, cat
         except:
             raise
 
-# find category for a single product when SKU supplied
-def findCategoryID(database_cursor, sku):
-    findCategoryQ = "SELECT category FROM products WHERE sku = '%s'" % (sku)
-    try:
-        database_cursor.execute(findCategoryQ)
-        DBResult = database_cursor.fetchone()
-        category_id = DBResult[0]
-        return category_id
-    except:
-        raise
-
-# returns the list of category for the product as mentioned in skustr
-def getCategoryGroup(database_cursor, skustr):
-    SKU = skustr.split(',')
-    raw_list = []
-    for sku in SKU:
-        database_cursor.execute("SELECT category FROM products WHERE sku = '%s';"%sku)
-        raw_list.append(database_cursor.fetchone())
-    cooked_list = []
-    for data in raw_list:
-        cooked_list.append(data[0])
-    fine_list = list(set(cooked_list))
-    if len(fine_list) == 1:
-        category_list = getCategory(database_cursor, category_id=fine_list[0])
-    else:
-        category_list = getCategory(database_cursor, category_list=fine_list)        
-    return category_list
-
-# returns the list of products as referred in skustr
-def getProductGroup(database_cursor, skustr, fullPrice=False):
-    SKUs = skustr.split(',')
-    products_list = []
-    for sku in SKUs:
-        product_unit = getProduct(database_cursor, sku, fullPrice = fullPrice)
-        products_list.append(product_unit)
-    return products_list
-
-# returns an inidividual product when sku of the product provided
-def getProduct(database_cursor, sku, fullPrice = False):
-    get1ProductSKU = "SELECT * FROM products WHERE sku = '%s'" % (sku)
-    try:
-        database_cursor.execute(get1ProductSKU)
-        product_result = database_cursor.fetchone()
-        product = buildProduct(database_cursor, one_product_tuple=product_result, fullPrice = fullPrice)
-        return product
-    except:
-        return int('1+2+3')
-
-def fetchProductRandom(database_cursor, number, fullPrice=False):
-    getRandomQ = "SELECT * FROM products ORDER by RAND() LIMIT %d" % number
-    try:
-        database_cursor.execute(getRandomQ)
-        product_results_tuple = database_cursor.fetchall()
-        data = {
-            "category" : getCategory(database_cursor, all_category=True),
-            "products" : buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=fullPrice)
-        }
-        message = status_codes[1]
-        message['data'] = data
-        return jsonify(message), 200
-    except:
-        return jsonify(status_codes[2]), 404
-
 def fetchAllProducts(database_cursor, minPrice = None, maxPrice = None, order = None, fullPrice = False):
     if order == None:
         getAllProductsQ = "SELECT * FROM products ORDER BY 'id' ASC;"
-
     else:
         getAllProductsQ = "SELECT * FROM products ORDER BY '%s' DESC;" % order 
     try:
@@ -234,62 +159,12 @@ def fetchAllProducts(database_cursor, minPrice = None, maxPrice = None, order = 
         product_results_tuple = database_cursor.fetchall()
         data = {
             "category" : getCategory(database_cursor, all_category=True),
-            "products" : validatePriceRange(buildProduct(database_cursor, product_results_tuple=product_results_tuple), minPrice=minPrice, maxPrice=maxPrice)
+            "products" : validatePriceRange(buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=True), minPrice=minPrice, maxPrice=maxPrice)
         }
         # return 'Query executed for the least'
         message = status_codes[1]
         message['data'] = data
         return json.dumps(message, indent=4)
     except:
-        return status_codes[2]
-    
-def fetchSearchedProduct(database_cursor, search_query, fullPrice = False):
-    searchProductQ = "SELECT * FROM `products` WHERE MATCH(brand,name) AGAINST ('%s' IN NATURAL LANGUAGE MODE)" % search_query
-    try:
-        database_cursor.execute(searchProductQ)
-        product_results_tuple = database_cursor.fetchall()
-        data = {
-            "category" : getCategory(database_cursor, all_category=True),
-            "products" : buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=fullPrice)
-        }
-        if len(data['products']) is 0:
-            return jsonify(status_codes[2]), 404
-        message = status_codes[1]
-        message['data'] = data
-        return jsonify(message), 200
-    except:
-        return jsonify(status_codes[2]), 404
-
-# prepare a whole response data when database_cursor and skustr provided
-def fetchProductGroup(database_cursor, skustr, fullPrice):
-    message = cache.get('groupProduct%s%s' % (skustr, str(fullPrice).lower()) )
-    if message is None:
-        try:
-            data = {
-                "category" : getCategoryGroup(database_cursor, skustr),
-                "products" : getProductGroup(database_cursor, skustr, fullPrice) 
-            }
-            message = status_codes[1]
-            message['data'] = data
-            cache.set('groupProduct%s%s' %(skustr, str(fullPrice).lower()), message, timeout=600)
-            return jsonify(message), 200
-        except:
-            return jsonify(status_codes[2]), 404
-    return jsonify(message), 200
-    
-# prepare a whole response message when database_cursor and sku provided
-def fetchoneProduct(database_cursor, sku, fullPrice):
-    message = cache.get('oneProduct%s%s' %(sku, str(fullPrice).lower()))
-    if message is None:
-        try:
-            data = {
-                "category" : getCategory(database_cursor, category_id=findCategoryID(database_cursor, sku)),
-                "product" : getProduct(database_cursor, sku, fullPrice = fullPrice)
-            }
-            message = status_codes[1]
-            message['data'] = data
-            cache.set('oneProduct%s%s' %(sku, str(fullPrice).lower()), message, timeout=600)
-            return jsonify(message), 200
-        except:
-            return jsonify(status_codes[2]), 404
-    return jsonify(message), 200  
+        # return status_codes[2]
+        raise
