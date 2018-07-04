@@ -91,10 +91,6 @@ def get_product_review(product_container):
                 return int(rev1.strip().replace(')',''))
     except:
         return int(0)
-    # For the ideal data value, (i.e. 0 if no review) following tweak sould be provided:
-    # product_review = get_product_review(products)
-    # if product_review is None:
-    #     product_review = int(0)
 
 # return the category from the page given as argument
 def get_category(page):
