@@ -17,17 +17,21 @@ database_cursor = database_cursor = pymysql.connect(DB_data['server'], DB_data['
 def validatePriceRange(list_of_products, minPrice = None, maxPrice = None, fullPrice = False):
     new_product_list = []
     # for the list of products that comes with the list of prices
-    if fullPrice == True:
+    if fullPrice:
         if minPrice:
             new_product_list = list(filter(lambda x : x['prices'][-1]['price'] >= minPrice, list_of_products))
         if maxPrice:
             new_product_list = list(filter(lambda x : x['prices'][-1]['price'] <= maxPrice, new_product_list))          
+        if minPrice is None and maxPrice is None:
+            return list_of_products
     # for the list of products that comes with single price
     else:
         if minPrice:
             new_product_list = list(filter(lambda x : x['prices']['price'] >= minPrice, list_of_products))
         if maxPrice:
             new_product_list = list(filter(lambda x : x['prices']['price'] <= maxPrice, new_product_list))                  
+        if minPrice is None and maxPrice is None:
+            return list_of_products
     return new_product_list
 
 # common function to build JSON data from tuple incoming from database
@@ -153,13 +157,14 @@ def fetchAllProducts(database_cursor, minPrice = None, maxPrice = None, order = 
     if order == None:
         getAllProductsQ = "SELECT * FROM products ORDER BY 'id' ASC;"
     else:
-        getAllProductsQ = "SELECT * FROM products ORDER BY '%s' DESC;" % order 
+        getAllProductsQ = "SELECT * FROM products ORDER BY products.%s DESC;" % order 
     try:
         database_cursor.execute(getAllProductsQ)
         product_results_tuple = database_cursor.fetchall()
+        products_list = buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=fullPrice)
         data = {
             "category" : getCategory(database_cursor, all_category=True),
-            "products" : validatePriceRange(buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=True), minPrice=minPrice, maxPrice=maxPrice)
+            "products" : validatePriceRange(products_list ,minPrice=minPrice, maxPrice=maxPrice)
         }
         # return 'Query executed for the least'
         message = status_codes[1]
