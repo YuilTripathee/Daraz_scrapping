@@ -491,6 +491,7 @@ def fetchCategoryProd(database_cursor, category, number = None, minPrice = None,
             return jsonify(message), 200
         except:
             return jsonify(status_codes[2]), 404
+
 # route that return status codes to the browser
 @app.route('/api/statusCodes/', methods=['GET'])
 def sendStatusCodes():
