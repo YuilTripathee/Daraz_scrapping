@@ -3,6 +3,7 @@ import json
 import pymysql
 import time
 
+<<<<<<< HEAD
 # Flask microservice modules
 from flask import Flask, jsonify, request
 from werkzeug.contrib.cache import SimpleCache
@@ -14,6 +15,8 @@ cache = SimpleCache()
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.config['JSON_SORT_KEYS'] = False
 
+=======
+>>>>>>> 8e27e40220dc8794da2e3e1fff5967c53eafa9d5
 # Acquire database config info
 with open('../config/DBconf.json', 'r', encoding='utf-8') as fp:
     DB_data = json.load(fp)
@@ -28,17 +31,31 @@ database_cursor = database_cursor = pymysql.connect(DB_data['server'], DB_data['
 def validatePriceRange(list_of_products, minPrice = None, maxPrice = None, fullPrice = False):
     new_product_list = []
     # for the list of products that comes with the list of prices
+<<<<<<< HEAD
     if fullPrice == True:
+=======
+    if fullPrice:
+>>>>>>> 8e27e40220dc8794da2e3e1fff5967c53eafa9d5
         if minPrice:
             new_product_list = list(filter(lambda x : x['prices'][-1]['price'] >= minPrice, list_of_products))
         if maxPrice:
             new_product_list = list(filter(lambda x : x['prices'][-1]['price'] <= maxPrice, new_product_list))          
+<<<<<<< HEAD
+=======
+        if minPrice is None and maxPrice is None:
+            return list_of_products
+>>>>>>> 8e27e40220dc8794da2e3e1fff5967c53eafa9d5
     # for the list of products that comes with single price
     else:
         if minPrice:
             new_product_list = list(filter(lambda x : x['prices']['price'] >= minPrice, list_of_products))
         if maxPrice:
             new_product_list = list(filter(lambda x : x['prices']['price'] <= maxPrice, new_product_list))                  
+<<<<<<< HEAD
+=======
+        if minPrice is None and maxPrice is None:
+            return list_of_products
+>>>>>>> 8e27e40220dc8794da2e3e1fff5967c53eafa9d5
     return new_product_list
 
 # common function to build JSON data from tuple incoming from database
@@ -160,6 +177,7 @@ def getCategory(database_cursor, all_category = False, category_list = None, cat
         except:
             raise
 
+<<<<<<< HEAD
 # find category for a single product when SKU supplied
 def findCategoryID(database_cursor, sku):
     findCategoryQ = "SELECT category FROM products WHERE sku = '%s'" % (sku)
@@ -235,12 +253,27 @@ def fetchAllProducts(database_cursor, minPrice = None, maxPrice = None, order = 
         data = {
             "category" : getCategory(database_cursor, all_category=True),
             "products" : validatePriceRange(buildProduct(database_cursor, product_results_tuple=product_results_tuple), minPrice=minPrice, maxPrice=maxPrice)
+=======
+def fetchAllProducts(database_cursor, minPrice = None, maxPrice = None, order = None, fullPrice = False):
+    if order == None:
+        getAllProductsQ = "SELECT * FROM products ORDER BY 'id' ASC;"
+    else:
+        getAllProductsQ = "SELECT * FROM products ORDER BY products.%s DESC;" % order 
+    try:
+        database_cursor.execute(getAllProductsQ)
+        product_results_tuple = database_cursor.fetchall()
+        products_list = buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=fullPrice)
+        data = {
+            "category" : getCategory(database_cursor, all_category=True),
+            "products" : validatePriceRange(products_list ,minPrice=minPrice, maxPrice=maxPrice)
+>>>>>>> 8e27e40220dc8794da2e3e1fff5967c53eafa9d5
         }
         # return 'Query executed for the least'
         message = status_codes[1]
         message['data'] = data
         return json.dumps(message, indent=4)
     except:
+<<<<<<< HEAD
         return status_codes[2]
     
 def fetchSearchedProduct(database_cursor, search_query, fullPrice = False):
@@ -293,3 +326,7 @@ def fetchoneProduct(database_cursor, sku, fullPrice):
         except:
             return jsonify(status_codes[2]), 404
     return jsonify(message), 200  
+=======
+        # return status_codes[2]
+        raise
+>>>>>>> 8e27e40220dc8794da2e3e1fff5967c53eafa9d5

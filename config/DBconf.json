@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 {
     "server" : "127.0.0.1",
     "username" : "root",
     "password" : "",
     "database" : "test_db"
+=======
+{
+    "server" : "127.0.0.1",
+    "username" : "root",
+    "password" : "",
+    "database" : "test_db"
+>>>>>>> 8e27e40220dc8794da2e3e1fff5967c53eafa9d5
 }
