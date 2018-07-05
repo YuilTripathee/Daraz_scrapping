@@ -257,7 +257,7 @@ def sendSomeProducts():
     # dumping out data
     return fetchProductRandom(database_cursor, number, fullPrice=fullPrice)
 def fetchProductRandom(database_cursor, number, fullPrice=False):
-    getRandomQ = "SELECT * FROM products ORDER by RAND() LIMIT %d" % number
+    getRandomQ = "SELECT * FROM products ORDER by RAND() LIMIT %d;" % number
     try:
         database_cursor.execute(getRandomQ)
         product_results_tuple = database_cursor.fetchall()
@@ -332,7 +332,7 @@ def fetchAllProducts(database_cursor, minPrice = None, maxPrice = None, order = 
         products_list = buildProduct(database_cursor, product_results_tuple=product_results_tuple, fullPrice=fullPrice)
         data = {
             "category" : getCategory(database_cursor, all_category=True),
-            "products" : validatePriceRange(products_list ,minPrice=minPrice, maxPrice=maxPrice)
+            "products" : validatePriceRange(products_list ,minPrice=minPrice, maxPrice=maxPrice, fullPrice=fullPrice)
         }
         message = status_codes[1]
         message['data'] = data
@@ -439,9 +439,7 @@ def sendProductInCategory():
     if order is None:
         order = None
     elif order == 'time':
-        order = 'time'
-    elif order == 'price':
-        order = 'price'
+        order = 'date_updated'
     elif order == 'reviews':
         order = 'reviews'
     else:
@@ -458,17 +456,41 @@ def sendProductInCategory():
         fullPrice = True
     else:
         return jsonify(status_codes[3]), 400
-    return jsonify({
-        'data' : {
-            'category' : category,
-            'number' : number,
-            'minPrice' : minPrice,
-            'maxPrice' : maxPrice,
-            'order' : order,
-            'fullPrice' : fullPrice
+    database_cursor = pymysql.connect(DB_data['server'], DB_data['username'], DB_data['password'], DB_data['database']).cursor()
+    return fetchCategoryProd(database_cursor, category, number = number, minPrice = minPrice, maxPrice = maxPrice, order = order, fullPrice = fullPrice)
+def fetchCategoryProd(database_cursor, category, number = None, minPrice = None, maxPrice = None, order = None, fullPrice = False):
+    if number == None:
+        if order:
+            getCategoryProdQ = "SELECT * FROM products WHERE category = %d ORDER BY products.%s DESC;" % (category, order)
+        else:
+            getCategoryProdQ = "SELECT * FROM products WHERE category = %d ORDER BY products.id ASC;" % category
+        try:
+            database_cursor.execute(getCategoryProdQ)
+            products_results_tuple = database_cursor.fetchall()
+            products_list = buildProduct(database_cursor, product_results_tuple=products_results_tuple, fullPrice=fullPrice)
+            data = {
+                "category" : getCategory(database_cursor, category_id=category),
+                "products" : validatePriceRange(products_list, minPrice=minPrice, maxPrice=maxPrice, fullPrice=fullPrice)
+            }
+            message = status_codes[1]
+            message['data'] = data
+            return jsonify(message), 200
+        except:
+            return jsonify(status_codes[2]), 404
+    else:
+        getCategoryProdQ = "SELECT * FROM products WHERE category = %d ORDER BY RAND() LIMIT %d;" % (category, number)
+        try:
+            database_cursor.execute(getCategoryProdQ)
+            products_results_tuple = database_cursor.fetchall()
+            data = {
+                "category" : getCategory(database_cursor, category_id=category),
+                "products" : buildProduct(database_cursor, product_results_tuple=products_results_tuple, fullPrice=fullPrice)
         }
-    }), 200
-
+            message = status_codes[1]
+            message['data'] = data
+            return jsonify(message), 200
+        except:
+            return jsonify(status_codes[2]), 404
 # route that return status codes to the browser
 @app.route('/api/statusCodes/', methods=['GET'])
 def sendStatusCodes():
