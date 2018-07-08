@@ -3,12 +3,16 @@ import json
 import pymysql
 import time
 
+# add SSL encryption module for standard library
+import ssl
+
 # Flask microservice modules
-from flask import Flask, jsonify, request
+from quart import Quart, jsonify, request
 from werkzeug.contrib.cache import SimpleCache
 
 # Flask app and cache declaration
-app = Flask(__name__)
+
+app = Quart(__name__)
 cache = SimpleCache()
 # Note : apply this in development environment only
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
@@ -213,7 +217,7 @@ def getProduct(database_cursor, sku, fullPrice = False):
 
 # route to provide info about the backend
 @app.route('/api/', methods=['GET'])
-def send_info_msg():
+async def send_info_msg():
     data = {
         'data' : {
             'provider' : 'Product monitoring system',
@@ -229,7 +233,7 @@ def send_info_msg():
 
 # route to return the number of random products as specified
 @app.route('/api/products/', methods=['GET'])
-def sendSomeProducts():
+async def sendSomeProducts():
     args = request.args
     # getting the number of products
     try:
@@ -273,7 +277,7 @@ def fetchProductRandom(database_cursor, number, fullPrice=False):
 
 # route to provide all the products in the database
 @app.route('/api/products/all/', methods=['GET'])
-def sendAllProducts():
+async def sendAllProducts():
     args = request.args
     # fetching minimum price range from URL
     try:
@@ -346,7 +350,7 @@ def fetchAllProducts(database_cursor, minPrice = None, maxPrice = None, order = 
     
 # route to return a search query
 @app.route('/api/products/search/', methods=['GET'])
-def sendSearchResults():
+async def sendSearchResults():
     args = request.args
     # get the query to search on database
     try:
@@ -391,7 +395,7 @@ def fetchSearchedProduct(database_cursor, search_query, fullPrice = False):
 
 # route to return the product from the category specified
 @app.route('/api/products/category/', methods=['GET'])
-def sendProductInCategory():
+async def sendProductInCategory():
     args = request.args
     # getting category number
     try:
@@ -496,13 +500,13 @@ def fetchCategoryProd(database_cursor, category, number = None, minPrice = None,
 
 # route that return status codes to the browser
 @app.route('/api/statusCodes/', methods=['GET'])
-def sendStatusCodes():
+async def sendStatusCodes():
     with open('status.json', 'r', encoding='utf-8') as fp:
         return jsonify(json.load(fp)), 200
 
 # route where you set 
 @app.route('/api/products/skugroup/', methods=['GET'])
-def sendGroup():
+async def sendGroup():
     args = request.args
     # getting the list of SKUs as string with comma separated formats
     try:
@@ -546,7 +550,7 @@ def fetchProductGroup(database_cursor, skustr, fullPrice):
     return jsonify(message), 200
 
 @app.route('/api/product/', methods=['GET'])
-def sendOneProduct():
+async def sendOneProduct():
     args = request.args
     try:
         sku = str(args.get('sku', ''))
@@ -593,5 +597,15 @@ if __name__ == '__main__':
     except:
         port = 5000 # default port when argument not provided during script call
 
+    # setup SSL encryption route
+    ssl_context = ssl.create_default_context(
+        ssl.Purpose.CLIENT_AUTH,
+    )
+    ssl_context.options |= ssl.OP_NO_TLSv1 | ssl.OP_NO_TLSv1_1 
+    ssl_context.set_ciphers('ECDHE+AESGCM')
+    ssl_context.load_cert_chain(
+        certfile='cert.pem', keyfile='key.pem',
+    )
+    ssl_context.set_alpn_protocols(['h2', 'http/1.1'])
     # starting server
-    app.run(host = '0.0.0.0', port=port, threaded=True)    
+    app.run(host = '0.0.0.0', port=port, ssl=ssl_context)    
