@@ -28,6 +28,7 @@ with open('status.json', 'r', encoding='utf-8') as fp:
     status_codes = json.load(fp)
     fp.close()
 
+# Takes products list, minPrice and maxPrice and return filtered list
 def validatePriceRange(list_of_products, minPrice = None, maxPrice = None, fullPrice = False):
     new_product_list = []
     # for the list of products that comes with the list of prices
