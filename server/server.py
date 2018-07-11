@@ -596,7 +596,7 @@ if __name__ == '__main__':
     try:
         port = int(sys.argv[1]) # takes the port provided as argument during function call
     except:
-        port = 5000 # default port when argument not provided during script call
+        port = 8000 # default port when argument not provided during script call
 
     # setup SSL encryption route
     ssl_context = ssl.create_default_context(
