@@ -224,7 +224,7 @@ async def send_info_msg():
             'provider' : 'Product monitoring system',
             'content-type' : 'application/json',
             'host' : 'localhost',
-            'server' : 'Werkeug/0.14.1',
+            'server' : 'Gunicorn',
             'python_version' : '3.6.5',
             'developer' : 'Yuil Tripathee',
             'date' : time.asctime()
